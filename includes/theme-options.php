@@ -35,6 +35,7 @@ add_action( 'admin_menu', 'theme_options_add_page' );
 
 
 // get the NetfunkTheme options
+$netfunk_general_options = get_option('netfunktheme_theme_general_options');
 $theme_options = get_option('netfunktheme_theme_options');
 $netfunk_page_options = get_option('netfunktheme_theme_pages_options');
 $netfunk_post_options = get_option('netfunktheme_theme_posts_options');
@@ -71,7 +72,10 @@ $post_splash_options = array(
     'label' => __( 'Splash Img + Show Thumbnail' )),
   '2' => array(
     'value' =>	'2',
-    'label' => __( 'No Splash', 'netfunktheme' ))
+    'label' => __( 'No Splash | Hide Thumbnail', 'netfunktheme' )),
+  '2' => array(
+    'value' =>	'3',
+    'label' => __( 'No Splash + Show Thumbnail', 'netfunktheme' ))
 );
 
 /* netfunktheme on/off options */
@@ -100,9 +104,14 @@ function theme_options_welcome() {
 ?>
 	<div class="wrap netfunktheme-admin">
     
-    	<div id="icon-themes" class="icon32"></div>  
+    	
     
-		<?php echo "<h2>" . wp_get_theme() . __( '', 'netfunktheme' ) . "</h2>"; ?>
+		<h2>
+        
+        	<span class="dashicons dashicons-welcome-widgets-menus" data-code="f116" style="font-size: 30px"></span> &nbsp; 
+			<?php echo wp_get_theme() . __( '', 'netfunktheme' ); ?>
+        
+        </h2>
     
         <br />
     
@@ -201,102 +210,82 @@ function theme_options_welcome() {
 /* netfunktheme general settings options page */
 function theme_options_general() {
 
+	global $onoff_options;
+	if ( ! isset( $_REQUEST['settings-updated'] ) )
+		$_REQUEST['settings-updated'] = false;
+
 ?>
 	<div class="wrap netfunktheme-admin">
     
-    	<div id="icon-themes" class="icon32"></div>  
-    
-		<?php echo "<h2>" . wp_get_theme() . __( '', 'netfunktheme' ) . "</h2>"; ?>
+    	<h2>
+        
+        	<span class="dashicons dashicons-dashboard" data-code="f226" style="font-size: 30px"></span> &nbsp; 
+			<?php echo wp_get_theme() . __( ' - General Settings', 'netfunktheme' ); ?>
+        
+        </h2>
     
         <br />
+        
+        <?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
+		<div class="updated fade"><p><strong><?php _e( 'Options saved', 'netfunktheme' ); ?></strong></p></div>
+		<?php endif; ?>
+
+		<form method="post" action="options.php">
+		
+		<?php settings_fields( 'netfunktheme_theme_general_options' ); ?>
+        <?php $options = get_option( 'netfunktheme_theme_general_options' ); ?>
+    
+    	<?php 
+			
+			// set default values 
+			if ( ! isset( $options['splash_height'] ) )
+				$options['splash_height'] = '400'; 
+			
+			if ( ! isset( $options['show_num_features'] ) )
+				$options['show_num_features'] = '5'; 
+		
+		?>
+    
     
         <?php theme_nav() ?>
 
         <br />
         
-        <div class="panel radius large-10 medium-10 small-10">
-            
-            <div class="large-8">
-            
-                <p><span class="fa fa-exclamation fa-4x left" style="margin-right: 20px"></span><h2 class="antialiased">
-                Welcome to your <strong><span style="color:#30b0c4">Netfunk</span><i>Theme</i></strong></h2> Read here for help setting up and configuring <u>Netfunk<i>Theme</i></u>. 
-                There are many display options and all configurable through this control panel. Use the menu at the top of this page to navigate the various content areas; 
-                Including the <strong>Front Page</strong>, <strong>Content Pages</strong>, <strong>Blog Posts</strong>, <strong>Custom CSS / Scripting</strong> and the native 
-                <strong>Plugins</strong> section to get you started.</p>
-                
-            </div>
-            
-        	<br />
-            <hr />
-       		<br />   
-
-
-            <div class="large-6 small-12 left">
-                <h2 class="left"><i class="fa fa-lightbulb-o"></i> &nbsp; Quick Walkthrough <br  /> <small>For more information click the button below each section.</small> </h2>
-            	<i class="fa fa-arrow-down fa-3x netfunktheme-walkthrough show-for-large-up"></i>
-            </div>
-            
-            
-            <div class="large-6 small-12 left">
-                
-                <div class="large-6 left">
-                	<h2><i class="fa fa-info-circle"></i> &nbsp; Documentation <br  /> <small>Jump to the full documentation section.</small> </h2>
-                </div>
-               
-               <div class="large-6 left">
-               		<br />
-                	<a href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_docs" ?>" class="button-docs">NetfunkTheme Docs</a>
-                </div>
-                
-            </div>
-
-
-            <br clear="all" />
-            <br />
-            <hr />
-            <br />
-
-            <div class="large-3 medium-6 small-12 left">
-                <h4>Front Page</h4>
-                <p style="padding-right: 10px;">The <strong><u>Front Page</u></strong> offers features for your personallized welcome message, a designated featured content area, bottom of page widgets area and your recent posts. all of which may be enabled or disabled alike.</p>
-                <a class="button-primary" href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_frontpage" ?>"> Front Page Settings </a>
-            </div>
-
-			<div class="large-3 medium-6 small-12 left">
-                <h4>Content Pages</h4>
-                <p style="padding-right: 10px;">To make customization easy we provide options for <strong><u>Custom CSS</u></strong> and <strong><u>JavaScript</u></strong> mark up. Use this feature to add custom styling or JavaScript such as Google Adsense or any other scripting you require.</p>
-                <a class="button-primary" href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_pages" ?>"> Content Pages </a>
-            </div>
-
-            <div class="large-3 medium-6 small-12 left">
-                <h4>Blog Posts</h4>
-                <p style="padding-right: 10px;">To make customization easy we provide options for <strong><u>Custom CSS</u></strong> and <strong><u>JavaScript</u></strong> mark up. Use this feature to add custom styling or JavaScript such as Google Adsense or any other scripting you require.</p>
-                <a class="button-primary" href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_posts" ?>"> Blogs Posts </a>
-            </div>
-
-            <div class="large-3 medium-6 small-12 left">
-                <h4>CSS & JavaScript</h4>
-                <p style="padding-right: 10px;">To make customization easy we provide options for <strong><u>Custom CSS</u></strong> and <strong><u>JavaScript</u></strong> mark up. Use this feature to add custom styling or JavaScript such as Google Adsense or any other scripting you require.</p>
-                <a class="button-primary" href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_css" ?>"> CSS & JavaScript </a>
-            </div>
-
-            <br clear="all" />
-            <br />
-            
+        <div class="panel callout radius">
+			<p>General settings options affect content sitewide. You may also make adjustments for both Pages and Posts type content independantly. </p>
         </div>
         
-        <div class="panel radius large-10 medium-10 small-10">
-        	<h2><i class="fa fa-ambulance"></i> &nbsp; Get Help from the Pros</h2>
+        <h3 class="netfunk title">Splash Content General Settings</h3>
+        
+        <div class="panel radius">
+            
+            <span class="fa fa-tachometer hide-for-small show-for-large-up" style="z-index: 1; color: #CCC; position: absolute; left: 100%; margin-left: -200px; font-size: 150px; "></span>
+            
+            <h3>Splash Image Content Area Height</h3>
+            
+        	<table class="form-table">
+              <tr valign="top"><th scope="row"><?php _e( ' Splash Height', 'netfunktheme' ); ?></th>
+               <td>
+                 <input type="text" id="netfunktheme_theme_general_options[splash_height]" name="netfunktheme_theme_general_options[splash_height]" size="5" value="<?php echo (isset($options['splash_height']) ? $options['splash_height'] : '' ); ?>"> px <br />
+                 <label class="description" for="netfunktheme_theme_general_options[splash_height]"><?php _e( 'The height of the splash image content area', 'netfunktheme' ); ?></label>
+                </td>
+              </tr>
+            </table> 
+            
+            <h3>Slash Content Display Limit</h3>
+            
+        	<table class="form-table">
+              <tr valign="top"><th scope="row"><?php _e( ' Featured Item Limit', 'netfunktheme' ); ?></th>
+               <td>
+                 <input type="text" id="netfunktheme_theme_general_options[show_num_features]" name="netfunktheme_theme_general_options[show_num_features]" size="5" value="<?php echo (isset($options['show_num_features']) ? $options['show_num_features'] : '' ); ?>"> <br />
+                 <label class="description" for="netfunktheme_theme_general_options[show_num_features]"><?php _e( 'The maximum number of featured items to display.', 'netfunktheme' ); ?></label>
+                </td>
+              </tr>
+            </table>  
 
-				<div class="large-6">
-
-            		<p>Need some help? Head over to the forum to ask a professional. We are eager to help with any question you might have about setting up and customizing your <strong>NetfunkTheme</strong>.</p>
-
-					<a href="http://www.netfunkdesign.com/forum" class="button-primary">NetfunkTheme Forum</a>
-
-				</div>
-
-        </div>
+		</div>
+        
+        </form>
         
 	</div>
 <?php
@@ -307,26 +296,15 @@ function theme_general_options_validate( $input ) {
 	
 	global $onoff_options;
 	
-	if ( ! isset( $input['show_welcome_message'] ) )
-		$input['show_welcome_message'] = 'yes';
-	if ( ! array_key_exists( $input['show_welcome_message'], $onoff_options ) )
-		$input['show_welcome_message'] = 'yes';
+	if ( ! isset( $input['splash_height'] ) )
+		$input['splash_height'] = '400';
 
-	if ( ! isset( $input['show_featured_content'] ) )
-		$input['show_featured_content'] = 'yes';
-	if ( ! array_key_exists( $input['show_welcome_message'], $onoff_options ) )
-		$input['show_featured_content'] = 'yes';
+	$input['splash_height'] = $input['splash_height'];
 
-	//show_posts_on_home
-	if ( ! isset( $input['show_posts_on_home'] ) )
-		$input['show_posts_on_home'] = 'yes';
-	if ( ! array_key_exists( $input['show_posts_on_home'], $onoff_options ) )
-		$input['show_posts_on_home'] = 'yes';
-
-	$input['welcome_title'] = $input['welcome_title'];
-	$input['welcome_text'] = $input['welcome_text'];
-	$input['more_about_title'] = $input['more_about_title'];
-	$input['more_about_uri'] = $input['more_about_uri'];
+	if ( ! isset( $input['show_num_features'] ) )
+		$input['show_num_features'] = '5';
+	
+	$input['show_num_features'] = $input['show_num_features'];
 
 	return $input;
 }
@@ -336,14 +314,18 @@ function theme_general_options_validate( $input ) {
 function theme_options_frontpage() {
 	global $onoff_options;
 	if ( ! isset( $_REQUEST['settings-updated'] ) )
-		$_REQUEST['settings-updated'] = false;
+	  $_REQUEST['settings-updated'] = false;
 ?>
 
 	<div class="wrap netfunktheme-admin">
     
-    	<div id="icon-themes" class="icon32"></div>  
+    	<h2>
         
-		<?php echo "<h2>" . wp_get_theme() . __( ' - Front Page', 'netfunktheme' ) . "</h2>"; ?>
+        	<span class="dashicons dashicons-admin-home" data-code="f102" style="font-size: 30px"></span> &nbsp; 
+			<?php echo wp_get_theme() . __( ' - Front Page', 'netfunktheme' ); ?>
+        
+        </h2>
+        
 		<br />
 
 		<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
@@ -765,8 +747,14 @@ function theme_options_pages() {
 ?>
 
 	<div class="wrap netfunktheme-admin">
-    	<div id="icon-themes" class="icon32"></div>  
-		<?php echo "<h2>" . wp_get_theme() . __( ' - Content Page Layout Options', 'netfunktheme' ) . "</h2>"; ?>
+    	
+        <h2>
+        
+        	<span class="dashicons dashicons-format-aside" data-code="f123" style="font-size: 30px"></span> &nbsp; 
+			<?php echo wp_get_theme() . __( ' - Content Page Layout Options', 'netfunktheme' ); ?>
+        
+        </h2>  
+
         <br />
 		<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
        		<div class="updated fade"><p><strong><?php _e( 'Options saved', 'netfunktheme' ); ?></strong></p></div>
@@ -1001,7 +989,7 @@ function theme_options_pages() {
 			
 					$radio_setting = $options['show_page_primary_sidebar'];
 					if ( '' != $radio_setting ) {
-						if ( $options['show_page_primary_sidebar'] == $option['no'] ) {
+						if ( $options['show_page_primary_sidebar'] == $option['value'] ) {
 							$checked = "checked=\"checked\"";
 						} else {
 							$checked = '';
@@ -1121,8 +1109,13 @@ function theme_options_posts() {
 		$_REQUEST['settings-updated'] = false;
 ?>
 	<div class="wrap netfunktheme-admin">
-    	<div id="icon-themes" class="icon32"></div>  
-		<?php echo "<h2>" . wp_get_theme() . __( ' - Blog Post Layout Options', 'netfunktheme' ) . "</h2>"; ?>
+    	<h2>
+        
+        	<span class="dashicons dashicons-admin-page" data-code="f105" style="font-size: 30px"></span> &nbsp; 
+			<?php echo wp_get_theme() . __( ' - Blog Post Layout Options', 'netfunktheme' ); ?>
+        
+        </h2>
+        
         <br />
 		<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
        		<div class="updated fade"><p><strong><?php _e( 'Options saved', 'netfunktheme' ); ?></strong></p></div>
@@ -1714,8 +1707,13 @@ function theme_options_css() {
 		$_REQUEST['settings-updated'] = false;
 ?>
 	<div class="wrap netfunktheme-admin">
-    	<div id="icon-themes" class="icon32"></div>  
-		<?php echo "<h2>" . wp_get_theme() . __( ' - Custom CSS & JavaScript', 'netfunktheme' ) . "</h2>"; ?>
+    	<h2>
+        
+        	<span class="dashicons dashicons-edit" data-code="f464" style="font-size: 30px"></span> &nbsp; 
+			<?php echo wp_get_theme() . __( ' - Custom CSS & JavaScript', 'netfunktheme' ); ?>
+        
+        </h2>
+        
         <br />
 		<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
        		<div class="updated fade"><p><strong><?php _e( 'Options saved', 'netfunktheme' ); ?></strong></p></div>

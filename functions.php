@@ -412,8 +412,8 @@ function netfunktheme_custom_comments($comment, $args, $depth) {
 function netfunktheme_commenter_link() {
 
 	$commenter = get_comment_author_link();
-	
-	if ( ereg( '<a[^>]* class=[^>]+>', $commenter ) ) {
+
+	if ( preg_match( '/<a[^>]* class=[^>]+>/', $commenter ) ) {
 		$commenter = preg_replace( '/(<a[^>]* class=[\'"]?)/', '\\1url ' , $commenter );
 	} 
 	else {
@@ -756,15 +756,15 @@ function netfunktheme_get_pages_splash($per_page=4,$offset=0,$page_id){
 
 
 /* netfunktheme "smart" featured content */
-function netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id=0){
+function netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id=0,$height=400){
 
 	global $post, $posts, $page, $pages;
 
 ?>
 
-<div class="slideshow-wrapper">
+<div class="slideshow-wrapper"<?php echo ' style="height:' . $height .'px; min-height:' . $height .'px" ' ?>>
 
-	<!--div class="preloader"></div-->
+	<div class="preloader"></div>
 
     	<ul data-orbit data-options="animation:slide;animation_speed:800;pause_on_hover:true;resume_on_mouseout:true;slide_number:false;animation_speed:500;navigation_arrows:true;bullets:false;variable_height:true;">
      
@@ -864,14 +864,17 @@ function netfunktheme_author_page_info() {
 }
 add_action('netfunktheme_author_page_info', 'netfunktheme_author_page_info',1,0);
 
+/* netfunktheme author avatar */
 function netfunktheme_author_avatar($atts){
+	
 	extract( shortcode_atts( array(
 		'user_id' => '0',
 		'size' => '96'
 	), $atts ) );
-	$default_image = '/images/avatar.jpg';
-	$author_avatar = get_avatar($atts['user_id'], $atts['size']);
-	echo $author_avatar;
+	
+	$default = '/images/avatar.jpg';
+	echo get_avatar( $atts['user_id'], $atts['size'], $default );
+
 }
 add_action('netfunktheme_author_image','netfunktheme_author_avatar',1,1);
 

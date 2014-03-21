@@ -5,6 +5,11 @@
 
 // netfunktheme default options
 
+
+if ( ! isset( $netfunk_general_options['splash_height'] ) )
+	$netfunk_general_options['splash_height'] = '400';
+	
+
 if ( ! isset( $theme_options['show_welcome_message'] ) )
 	$theme_options['show_welcome_message'] = 'yes';
 if ( ! array_key_exists( $theme_options['show_welcome_message'], $onoff_options ) )
@@ -63,7 +68,7 @@ $theme_options['more_about_uri'] = '/about/';
 
 if (!isset($_GET['action'])):
 	$category_id = (isset($category_id) ? $category_id : 0);
-	netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id); 
+	netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id,$netfunk_general_options['splash_height']); 
 
 endif;
 
@@ -223,7 +228,9 @@ endif;
 		</div>
 
         <?php if ( isset($theme_options['show_front_page_sidebar']) && $theme_options['show_front_page_sidebar'] == 'yes' ){
-                
+        
+		if ( (isset($theme_options['show_front_page_primary_sidebar']) && $theme_options['show_front_page_primary_sidebar'] == 'yes') or (isset($theme_options['show_front_page_secondary_sidebar']) && $theme_options['show_front_page_secondary_sidebar'] == 'yes') )
+		
 			get_sidebar(); 
 		
 		} ?>

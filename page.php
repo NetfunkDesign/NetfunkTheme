@@ -95,7 +95,9 @@ if ( ! array_key_exists( $netfunk_page_options['show_page_secondary_sidebar'], $
 
             <div class="large-<?php echo (isset($netfunk_page_options['show_pages_sidebar']) && $netfunk_page_options['show_pages_sidebar'] == 'yes' ? '9' : '12')?> small-12 columns">
 
-                <hr />
+                <!--hr /-->
+                
+                <br />
 
                 <?php the_post(); ?>
                 
@@ -116,20 +118,23 @@ if ( ! array_key_exists( $netfunk_page_options['show_page_secondary_sidebar'], $
 							if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] == 0) {
 								// Splash Image 
 								// do not display thumbnail image
-						
 							} else if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] == 1) {
 								// Splash Image 
-								// also show thumbnail image
+								// show thumbnail 
 								if ( has_post_thumbnail() ) { 
 								  the_post_thumbnail('thumbnail', array('class' => 'right'));
 								}
 						
 							} else if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] == 2) {
-								// thumbnail only
+								// so splash 
+								// no thumbnail
+							} else if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] == 3) {
+								// so splash 
+								// show thumbnail
 								if ( has_post_thumbnail() ) { 
 								  the_post_thumbnail('thumbnail', array('class' => 'right'));
 								}
-						
+							
 							} else if (!isset($netfunk_page_options['page_splash_type'])){
 								// option not yet set. falls back to defaut: 'yes'
 								// Splash Image 

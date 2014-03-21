@@ -33,6 +33,8 @@ add_filter('get_avatar', 'netfunktheme_custom_avatar', 1, 5);
 
 function netfunktheme_custom_avatar( $avatar = '', $id_or_email , $size = 100 , $default = '', $alt = false ) {
 
+	$user_id = get_the_author_meta( 'ID' );
+
 	if ( is_numeric($id_or_email) ) 
 			$user_id = (int) $id_or_email;
 

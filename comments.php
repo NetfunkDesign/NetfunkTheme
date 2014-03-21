@@ -37,7 +37,7 @@ get_comment_type() == "comment" ? ++$comment_count : ++$ping_count;
 <?php 
 endif; 
 global $comments_by_type;
-$comments_by_type = &separate_comments( $comments );
+$comments_by_type = separate_comments( $comments );
 if ( ! empty($comments_by_type['pings']) ) : ?>
 <div id="trackbacks-list" class="comments">
 <h3><?php echo($ping_count > 1 ? '<span>'.$ping_count.'</span> '.__('Trackbacks', 'netfunktheme') : '<span>'. __('One', 'netfunktheme' ) .'</span> '. __('Trackback', 'netfunktheme') ); ?></h3>

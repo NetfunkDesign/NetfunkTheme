@@ -332,10 +332,12 @@ function theme_plugins_options_page() {
 	<div class="wrap">
 	
 	
-		<div id="icon-themes" class="icon32"></div>  
-		
-		
-		<?php echo "<h2>" . wp_get_theme() . __( ' Plugins', 'netfunktheme' ) . "</h2>"; ?>
+		<h2>
+        
+        	<span class="dashicons dashicons-admin-plugins" data-code="f106" style="font-size: 30px"></span> &nbsp; 
+			<?php echo wp_get_theme() . __( ' - Plugins', 'netfunktheme' ); ?>
+        
+        </h2>
 		
 		<br />
 
