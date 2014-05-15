@@ -68,7 +68,7 @@ $theme_options['more_about_uri'] = '/about/';
 
 if (!isset($_GET['action'])):
 	$category_id = (isset($category_id) ? $category_id : 0);
-	netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id,$netfunk_general_options['splash_height']); 
+	netfunktheme_get_large_featured($netfunk_general_options['show_num_features'],$offset=0,$category_id,$netfunk_general_options['splash_height']); 
 
 endif;
 

@@ -55,7 +55,7 @@ if ( ! array_key_exists( $netfunk_page_options['show_page_secondary_sidebar'], $
     if (!isset($_GET['action'])):
     
         echo '<div class="slideshow large-12 show-for-medium-up">';
-        netfunktheme_get_pages_splash($per_page=4,$offset=0,get_the_ID()); 
+        netfunktheme_get_pages_splash($netfunk_general_options['show_num_features'],$offset=0,get_the_ID(),$netfunk_general_options['splash_height']); 
         echo '</div>';
     
     endif;

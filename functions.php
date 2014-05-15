@@ -4,7 +4,7 @@
 	Theme Name: WP-netfunktheme 
 	Theme URI: http://netfunkdesign.com
 	Description: netfunkdesign.com Soundcloud.com Intigration.
-	Version: 1.0
+	Version: Beta 0.9.1
 	Author: Phil Sanders
 	Author URI: http://netfunkdesign.com
 
@@ -620,7 +620,7 @@ function netfunktheme_catch_page_image($content) {
     if (isset($matches [1][0]))
       $splash_img = $matches [1][0];
     if (empty($splash_img)) //Defines a default image
-      $splash_img = get_template_directory_uri() . "/images/default-splash.jpg";
+      $splash_img = get_stylesheet_directory_uri() . "/images/default-splash.jpg";
   }
   return $splash_img;
 }
@@ -641,7 +641,7 @@ function netfunktheme_catch_post_image($post="") {
     if (isset($matches [1][0]))
       $splash_img = $matches [1][0];
     if (empty($splash_img)) //Defines a default image
-      $splash_img = get_template_directory_uri() . "/images/default-splash.jpg";
+      $splash_img = get_stylesheet_directory_uri() . "/images/default-splash.jpg";
   }
   return $splash_img;
 }
@@ -689,13 +689,13 @@ function splash_img_callback( $atts, $content = null  ) {
 add_shortcode( 'splash', 'splash_img_callback' );
 
 /* netfunktheme splash image disaply */
-function netfunktheme_get_pages_splash($per_page=4,$offset=0,$page_id){
+function netfunktheme_get_pages_splash($per_page=4,$offset=0,$page_id,$height=400){
 
 	global $page, $pages;
 
 ?>
 
-<div class="slideshow-wrapper">
+<div class="slideshow-wrapper"<?php echo ' style="height:' . $height .'px; min-height:' . $height .'px;" ' ?>>
 
 	<!--div class="preloader"></div-->
 
@@ -762,7 +762,7 @@ function netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id=0,$h
 
 ?>
 
-<div class="slideshow-wrapper"<?php echo ' style="height:' . $height .'px; min-height:' . $height .'px" ' ?>>
+<div class="slideshow-wrapper"<?php echo ' style="height:' . $height .'px; min-height:' . $height .'px; overflow: hidden;" ' ?>>
 
 	<div class="preloader"></div>
 
@@ -800,7 +800,7 @@ function netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id=0,$h
             
                             <p><?php echo wp_trim_words(netfunktheme_content_strip_objects($content),30, '...') ?></p>
         
-                            <a href="<?php the_permalink(); ?>" class="button medium radius">Read More</a>
+                            <a href="<?php the_permalink(); ?>" class="button small radius">Read More</a>
     
                         </div>
                     

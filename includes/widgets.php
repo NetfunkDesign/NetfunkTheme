@@ -18,6 +18,7 @@ class Netfunk_Featured_Pages extends WP_Widget {
 	public function widget( $args, $instance ) {
 		extract($args);
 		//$page_id =  $instance[ 'page_id' ];
+		$page_ids = $instance[ 'pages_featured_id' ];
 		//$page_name = get_the_post_by_ID( $page_id );
 		//$page_link = get_page_link( $page_id );
 		$page_title = $instance[ 'page_title' ];
@@ -29,12 +30,12 @@ class Netfunk_Featured_Pages extends WP_Widget {
 		echo '<div class="small-12 columns widget-content">';
 		echo '<h2 class="widget-title">'.$page_title.'</h2>';
 		//   per_page  |  offset  |  grid_size  | display_type     
-		$this->netfunktheme_get_pages($per_page,$offset,$grid_size,$display_type);
+		$this->netfunktheme_get_pages($page_ids,$per_page,$offset,$grid_size,$display_type);
 		echo '<br clear="all" />';
 		echo '</div>';
 	}
 	
-	public function netfunktheme_get_pages($per_page,$offset,$grid_size,$display_type){
+	public function netfunktheme_get_pages($page_ids,$per_page,$offset,$grid_size,$display_type){
 	
 	
 		/* SAMPLE CODE */
@@ -74,90 +75,94 @@ class Netfunk_Featured_Pages extends WP_Widget {
 		$mypages = get_pages( $args );
 		
 		$n = 1;
-		
-		foreach ( $mypages as $page ) : 
-			
-			if ($n <= $per_page){
-			
-				if ($display_type != 'image'){ 
-				
-			?>
-					<div class="large-<?php echo $grid_size ?> medium-4 small-12 left home-block">
-			
-				  <?php echo '<a href="';
-				  
-						echo get_page_link( $page->ID);
-						
-						echo '"';
-						
-						if($display_type=='tall')
-							echo ' class="tall"';
-						
-						echo ' title="';
-						printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') );
-						echo '" rel="bookmark">';
-						$content = $page->post_content;
-						
-						$image = '';
-						$image_url = wp_get_attachment_image_src( get_post_thumbnail_id($page->ID), 'medium');
-    					$image = $image_url[0];
-						
-						if (empty($image))
-							$image = netfunktheme_catch_page_image($content);
 
-						$content = apply_filters( 'the_content', $content ); 
-					
-					?>
-						
-                        <div class="home-block-img" style="background-image: url('<?php echo $image ?>')"></div>
-                        <div class="home-block-title">
-                        <?php echo $page->post_title; ?>
-                        </div>
-                    
-						<div class="home-block-content" data-equalizer-watch>
-						  <?php echo wp_trim_words(netfunktheme_content_strip_objects($content),30, '...');  ?>
-						</div>
-						
-						<button class="button success tiny radius show-for-medium-up">Read More</button>
-						<button class="button success small radius show-for-small">Read More</button>
-						
-						<?php echo '</a>' ?>
-			
-					</div>
-				
-				<?php 
-				
-				} else {
+		foreach ( $mypages as $page ) : 
 		
+			if (in_array($page->ID, explode(',',$page_ids))){
+		
+				if ($n <= $per_page){
+				
+					if ($display_type != 'image'){ 
+					
 				?>
-					<div class="large-<?php echo $grid_size ?> left" style="margin-bottom: 30px;">
-					<span data-tooltip class="has-tip [tip-bottom]" title="<?php $page->post_title ?>">
-					<?php 
-					echo '<a href="';
-					
-					get_page_link( $page->ID );
-					
-					echo '" rel="bookmark" class="featuredImage">';
-					
-					$image = netfunktheme_catch_page_image($content);
-					
-					?>
-					<div style="background-image: url('<?php echo $image ?>');">
-						<!--button class="button tiny success radius right">Read More</button-->
-					</div>
-					<?php 
-					echo '</a>'; 
-					?>
-					</span>
-					</div>
-				<?php 
-		
-				}
-			
-			}
-		
-			$n ++;
+						<div class="large-<?php echo $grid_size ?> medium-4 small-12 left home-block">
+				
+					  <?php echo '<a href="';
+					  
+							echo get_page_link( $page->ID);
+							
+							echo '"';
+							
+							if($display_type=='tall')
+								echo ' class="tall"';
+							
+							echo ' title="';
+							printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') );
+							echo '" rel="bookmark">';
+							$content = $page->post_content;
+							
+							$image = '';
+							$image_url = wp_get_attachment_image_src( get_post_thumbnail_id($page->ID), 'medium');
+							$image = $image_url[0];
+							
+							if (empty($image))
+								$image = netfunktheme_catch_page_image($content);
 	
+							$content = apply_filters( 'the_content', $content ); 
+						
+						?>
+							
+							<div class="home-block-img" style="background-image: url('<?php echo $image ?>')"></div>
+							<div class="home-block-title">
+							<?php echo $page->post_title; ?>
+							</div>
+						
+							<div class="home-block-content" data-equalizer-watch>
+							  <?php echo wp_trim_words(netfunktheme_content_strip_objects($content),30, '...');  ?>
+							</div>
+							
+							<button class="button success tiny radius show-for-medium-up">Read More</button>
+							<button class="button success small radius show-for-small">Read More</button>
+							
+							<?php echo '</a>' ?>
+				
+						</div>
+					
+					<?php 
+					
+					} else {
+			
+					?>
+						<div class="large-<?php echo $grid_size ?> left" style="margin-bottom: 30px;">
+						<span data-tooltip class="has-tip [tip-bottom]" title="<?php $page->post_title ?>">
+						<?php 
+						echo '<a href="';
+						
+						get_page_link( $page->ID );
+						
+						echo '" rel="bookmark" class="featuredImage">';
+						
+						$image = netfunktheme_catch_page_image($content);
+						
+						?>
+						<div style="background-image: url('<?php echo $image ?>');">
+							<!--button class="button tiny success radius right">Read More</button-->
+						</div>
+						<?php 
+						echo '</a>'; 
+						?>
+						</span>
+						</div>
+					<?php 
+			
+					}
+				
+				}
+
+	   			$n ++;
+
+			}
+
 		endforeach; 
 		
 		wp_reset_query();
@@ -202,21 +207,8 @@ class Netfunk_Featured_Pages extends WP_Widget {
 			$display_type = $instance[ 'display_type' ];}
 		else {
 			$display_type = __( 'default', 'text_domain' );}
+
 ?>
-        <p>
-        <label for="<?php echo $this->get_field_id( 'page_id' ); ?>"><?php _e( 'Page:' ); ?></label> 
-<?php 
-		
-		$args = array(
-		'depth'            => 0,
-		'child_of'         => 0,
-		'selected'         => 0,
-		'echo'             => 1,
-		'name'             => $this->get_field_name( 'page_id' ));
-		
-		wp_dropdown_pages( $args ); 
-?>
-        </p>
         
         <p>
 		<label for="<?php echo $this->get_field_id( 'page_title' ); ?>"><?php _e( 'Custom Title:' ); ?></label> 
@@ -228,60 +220,74 @@ class Netfunk_Featured_Pages extends WP_Widget {
 		<input class="widefat" id="<?php echo $this->get_field_id( 'pages_featured_id' ); ?>" name="<?php echo $this->get_field_name( 'pages_featured_id' ); ?>" type="text" value="<?php echo esc_attr( $page_ids ); ?>" />
 		</p>
 
-		<p>
-		<label for="<?php echo $this->get_field_id( 'pages_offset' ); ?>"><?php _e( 'Start Offset:' ); ?></label> 
-		<select class="widefat" id="<?php echo $this->get_field_id( 'pages_offset' ); ?>" name="<?php echo $this->get_field_name( 'pages_offset' ); ?>">
-        <option value="0"<?php echo (esc_attr( $offset ) == '0' ? ' selected' : ''); ?>>0</option>
-        <option value="1"<?php echo (esc_attr( $offset ) == '1' ? ' selected' : ''); ?>>1</option>
-        <option value="2"<?php echo (esc_attr( $offset ) == '2' ? ' selected' : ''); ?>>2</option>
-        <option value="3"<?php echo (esc_attr( $offset ) == '3' ? ' selected' : ''); ?>>3</option>
-        <option value="4"<?php echo (esc_attr( $offset ) == '4' ? ' selected' : ''); ?>>4</option>
-        <option value="5"<?php echo (esc_attr( $offset ) == '5' ? ' selected' : ''); ?>>5</option>
-        <option value="6"<?php echo (esc_attr( $offset ) == '6' ? ' selected' : ''); ?>>6</option>
-        <option value="7"<?php echo (esc_attr( $offset ) == '7' ? ' selected' : ''); ?>>7</option>
-        <option value="8"<?php echo (esc_attr( $offset ) == '8' ? ' selected' : ''); ?>>8</option>
-        <option value="9"<?php echo (esc_attr( $offset ) == '9' ? ' selected' : ''); ?>>9</option>
-        <option value="10"<?php echo (esc_attr( $offset ) == '10' ? ' selected' : ''); ?>>10</option>
-        <option value="11"<?php echo (esc_attr( $offset ) == '11' ? ' selected' : ''); ?>>11</option>
-        <option value="12"<?php echo (esc_attr( $offset ) == '12' ? ' selected' : ''); ?>>12</option>
-        </select>
-        </p>
+		<div class="clearfix">
+            <div class="small-5 left">
+                <p>
+                <label for="<?php echo $this->get_field_id( 'pages_offset' ); ?>"><?php _e( 'Page Offset:' ); ?></label> 
+                <select class="widefat" id="<?php echo $this->get_field_id( 'pages_offset' ); ?>" name="<?php echo $this->get_field_name( 'pages_offset' ); ?>">
+                <option value="0"<?php echo (esc_attr( $offset ) == '0' ? ' selected' : ''); ?>>0</option>
+                <option value="1"<?php echo (esc_attr( $offset ) == '1' ? ' selected' : ''); ?>>1</option>
+                <option value="2"<?php echo (esc_attr( $offset ) == '2' ? ' selected' : ''); ?>>2</option>
+                <option value="3"<?php echo (esc_attr( $offset ) == '3' ? ' selected' : ''); ?>>3</option>
+                <option value="4"<?php echo (esc_attr( $offset ) == '4' ? ' selected' : ''); ?>>4</option>
+                <option value="5"<?php echo (esc_attr( $offset ) == '5' ? ' selected' : ''); ?>>5</option>
+                <option value="6"<?php echo (esc_attr( $offset ) == '6' ? ' selected' : ''); ?>>6</option>
+                <option value="7"<?php echo (esc_attr( $offset ) == '7' ? ' selected' : ''); ?>>7</option>
+                <option value="8"<?php echo (esc_attr( $offset ) == '8' ? ' selected' : ''); ?>>8</option>
+                <option value="9"<?php echo (esc_attr( $offset ) == '9' ? ' selected' : ''); ?>>9</option>
+                <option value="10"<?php echo (esc_attr( $offset ) == '10' ? ' selected' : ''); ?>>10</option>
+                <option value="11"<?php echo (esc_attr( $offset ) == '11' ? ' selected' : ''); ?>>11</option>
+                <option value="12"<?php echo (esc_attr( $offset ) == '12' ? ' selected' : ''); ?>>12</option>
+                </select>
+                </p>
+            </div>
+        </div>
 
-        <p>
-		<label for="<?php echo $this->get_field_id( 'pages_per_page' ); ?>"><?php _e( 'Max Display Count:' ); ?></label> 
-		<select class="widefat" id="<?php echo $this->get_field_id( 'pages_per_page' ); ?>" name="<?php echo $this->get_field_name( 'pages_per_page' ); ?>">
-        <option value="1"<?php echo (esc_attr( $per_page ) == '1' ? ' selected' : ''); ?>>1</option>
-        <option value="2"<?php echo (esc_attr( $per_page ) == '2' ? ' selected' : ''); ?>>2</option>
-        <option value="3"<?php echo (esc_attr( $per_page ) == '3' ? ' selected' : ''); ?>>3</option>
-        <option value="4"<?php echo (esc_attr( $per_page ) == '4' ? ' selected' : ''); ?>>4</option>
-        <option value="5"<?php echo (esc_attr( $per_page ) == '5' ? ' selected' : ''); ?>>5</option>
-        <option value="6"<?php echo (esc_attr( $per_page ) == '6' ? ' selected' : ''); ?>>6</option>
-        <option value="7"<?php echo (esc_attr( $per_page ) == '7' ? ' selected' : ''); ?>>7</option>
-        <option value="8"<?php echo (esc_attr( $per_page ) == '8' ? ' selected' : ''); ?>>8</option>
-        <option value="9"<?php echo (esc_attr( $per_page ) == '9' ? ' selected' : ''); ?>>9</option>
-        <option value="10"<?php echo (esc_attr( $per_page ) == '10' ? ' selected' : ''); ?>>10</option>
-        <option value="11"<?php echo (esc_attr( $per_page ) == '11' ? ' selected' : ''); ?>>11</option>
-        <option value="12"<?php echo (esc_attr( $per_page ) == '12' ? ' selected' : ''); ?>>12</option>
-        </select>
-        </p>
-
-        <p>
-		<label for="<?php echo $this->get_field_id( 'pages_grid_size' ); ?>"><?php _e( 'Block Width' ); ?></label> 
-		<select class="widefat" id="<?php echo $this->get_field_id( 'pages_grid_size' ); ?>" name="<?php echo $this->get_field_name( 'pages_grid_size' ); ?>">
-        <option value="1"<?php echo (esc_attr( $grid_size ) == '1' ? ' selected' : ''); ?>>1</option>
-        <option value="2"<?php echo (esc_attr( $grid_size ) == '2' ? ' selected' : ''); ?>>2</option>
-        <option value="3"<?php echo (esc_attr( $grid_size ) == '3' ? ' selected' : ''); ?>>3</option>
-        <option value="4"<?php echo (esc_attr( $grid_size ) == '4' ? ' selected' : ''); ?>>4</option>
-        <option value="5"<?php echo (esc_attr( $grid_size ) == '5' ? ' selected' : ''); ?>>5</option>
-        <option value="6"<?php echo (esc_attr( $grid_size ) == '6' ? ' selected' : ''); ?>>6</option>
-        <option value="7"<?php echo (esc_attr( $grid_size ) == '7' ? ' selected' : ''); ?>>7</option>
-        <option value="8"<?php echo (esc_attr( $grid_size ) == '8' ? ' selected' : ''); ?>>8</option>
-        <option value="9"<?php echo (esc_attr( $grid_size ) == '9' ? ' selected' : ''); ?>>9</option>
-        <option value="10"<?php echo (esc_attr( $grid_size ) == '10' ? ' selected' : ''); ?>>10</option>
-        <option value="11"<?php echo (esc_attr( $grid_size ) == '11' ? ' selected' : ''); ?>>11</option>
-        <option value="12"<?php echo (esc_attr( $grid_size ) == '12' ? ' selected' : ''); ?>>12</option>
-        </select>
-        </p>
+		<div class="clearfix">
+		<div class="small-5 left">
+            <p>
+            <label for="<?php echo $this->get_field_id( 'pages_per_page' ); ?>"><?php _e( 'Max Display Count:' ); ?></label> 
+            <select class="widefat" id="<?php echo $this->get_field_id( 'pages_per_page' ); ?>" name="<?php echo $this->get_field_name( 'pages_per_page' ); ?>">
+            <option value="1"<?php echo (esc_attr( $per_page ) == '1' ? ' selected' : ''); ?>>1</option>
+            <option value="2"<?php echo (esc_attr( $per_page ) == '2' ? ' selected' : ''); ?>>2</option>
+            <option value="3"<?php echo (esc_attr( $per_page ) == '3' ? ' selected' : ''); ?>>3</option>
+            <option value="4"<?php echo (esc_attr( $per_page ) == '4' ? ' selected' : ''); ?>>4</option>
+            <option value="5"<?php echo (esc_attr( $per_page ) == '5' ? ' selected' : ''); ?>>5</option>
+            <option value="6"<?php echo (esc_attr( $per_page ) == '6' ? ' selected' : ''); ?>>6</option>
+            <option value="7"<?php echo (esc_attr( $per_page ) == '7' ? ' selected' : ''); ?>>7</option>
+            <option value="8"<?php echo (esc_attr( $per_page ) == '8' ? ' selected' : ''); ?>>8</option>
+            <option value="9"<?php echo (esc_attr( $per_page ) == '9' ? ' selected' : ''); ?>>9</option>
+            <option value="10"<?php echo (esc_attr( $per_page ) == '10' ? ' selected' : ''); ?>>10</option>
+            <option value="11"<?php echo (esc_attr( $per_page ) == '11' ? ' selected' : ''); ?>>11</option>
+            <option value="12"<?php echo (esc_attr( $per_page ) == '12' ? ' selected' : ''); ?>>12</option>
+            </select>
+            </p>
+        </div>
+        
+        <div class="small-2 left text-center"> <i class="fa fa-times" style="margin-top: 40px;"></i> </div>
+        
+		<div class="small-5 right">
+            <p>
+            <label for="<?php echo $this->get_field_id( 'pages_grid_size' ); ?>"><?php _e( 'Block Width:' ); ?></label> 
+            <select class="widefat" id="<?php echo $this->get_field_id( 'pages_grid_size' ); ?>" name="<?php echo $this->get_field_name( 'pages_grid_size' ); ?>">
+            <option value="1"<?php echo (esc_attr( $grid_size ) == '1' ? ' selected' : ''); ?>>1</option>
+            <option value="2"<?php echo (esc_attr( $grid_size ) == '2' ? ' selected' : ''); ?>>2</option>
+            <option value="3"<?php echo (esc_attr( $grid_size ) == '3' ? ' selected' : ''); ?>>3</option>
+            <option value="4"<?php echo (esc_attr( $grid_size ) == '4' ? ' selected' : ''); ?>>4</option>
+            <option value="5"<?php echo (esc_attr( $grid_size ) == '5' ? ' selected' : ''); ?>>5</option>
+            <option value="6"<?php echo (esc_attr( $grid_size ) == '6' ? ' selected' : ''); ?>>6</option>
+            <option value="7"<?php echo (esc_attr( $grid_size ) == '7' ? ' selected' : ''); ?>>7</option>
+            <option value="8"<?php echo (esc_attr( $grid_size ) == '8' ? ' selected' : ''); ?>>8</option>
+            <option value="9"<?php echo (esc_attr( $grid_size ) == '9' ? ' selected' : ''); ?>>9</option>
+            <option value="10"<?php echo (esc_attr( $grid_size ) == '10' ? ' selected' : ''); ?>>10</option>
+            <option value="11"<?php echo (esc_attr( $grid_size ) == '11' ? ' selected' : ''); ?>>11</option>
+            <option value="12"<?php echo (esc_attr( $grid_size ) == '12' ? ' selected' : ''); ?>>12</option>
+            </select>
+            </p>
+        </div>
+        </div>
+        
+        <p class="text-right">(Hint: Max times Width should be equal to <u>12</u>)</p>
 
 		<p>
 		<label for="<?php echo $this->get_field_id( 'display_type' ); ?>"><?php _e( 'Display:' ); ?></label> 

@@ -11,7 +11,7 @@
 
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
             
-                <img src="<?php echo get_template_directory_uri() ?>/images/logo1.png" alt="" border="0"/>
+                <img src="<?php echo get_stylesheet_directory_uri() ?>/images/logo1.png" alt="" border="0"/>
             
             </a>
 

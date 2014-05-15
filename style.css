@@ -146,12 +146,15 @@ button.secondary, .button.secondary {
     background: #272e30; }
 
 
+.slideshow-wrapper {
+  overflow: hidden;}
+
 .slideshow-wrapper .orbit-container {
   background: #000;
   border-bottom: 1px #DDD solid;}
  .orbit-container .orbit-slides-container, 
  .orbit-container .orbit-slides-container li {
-	 height: 400px;
+	 height: auto;
 	 min-height: 400px; }
   .orbit-container .orbit-slides-container li {
 	  box-shadow: inset 0px 4px 0px rgba(255,255,255,0.1), inset 0px -1px 0px rgba(0,0,0,0.2);
@@ -159,6 +162,8 @@ button.secondary, .button.secondary {
 	  background-size: cover;
 	  background-position: 50% 20%; }
   .orbit-container .orbit-slides-container > * .orbit-caption {
+	  top: 10%;
+	  bottom: inherit;
 	  background: none; }
    .orbit-container .orbit-slides-container > * .orbit-caption .row {
 	   padding: 10px; }
@@ -168,10 +173,11 @@ button.secondary, .button.secondary {
 	background: #000;
 	padding: 1em;
 	opacity: 0.7; }
-  .orbit-caption .button {
-	
-	box-shadow: 0px 2px 7px rgba(0,0,0,0.5);
-	border-radius: 7px;}
+  .orbit-caption h2 {
+    font-size: 1.965em;}
+  .orbit-caption p {
+    font-size: .95em;}
+
 
 
 /* HEADER */

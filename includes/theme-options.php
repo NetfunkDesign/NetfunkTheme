@@ -211,6 +211,7 @@ function theme_options_welcome() {
 function theme_options_general() {
 
 	global $onoff_options;
+	
 	if ( ! isset( $_REQUEST['settings-updated'] ) )
 		$_REQUEST['settings-updated'] = false;
 
@@ -232,7 +233,7 @@ function theme_options_general() {
 
 		<form method="post" action="options.php">
 		
-		<?php settings_fields( 'netfunktheme_theme_general_options' ); ?>
+		<?php settings_fields( 'netfunktheme_general_options' ); ?>
         <?php $options = get_option( 'netfunktheme_theme_general_options' ); ?>
     
     	<?php 
@@ -285,24 +286,31 @@ function theme_options_general() {
 
 		</div>
         
+        <div class="panel radius">
+
+            <h3>Save Theme Settings </h3>
+            
+            <br />
+            
+            <p>
+                <input type="submit" class="button-primary" value="<?php _e( 'Save Settings', 'netfunktheme' ); ?>" />
+            </p>
+            
+            <br />
+        
+        </div>
+        
         </form>
         
 	</div>
 <?php
+
 }
 
 /* netfunkthem general settings options update */
 function theme_general_options_validate( $input ) {
-	
-	global $onoff_options;
-	
-	if ( ! isset( $input['splash_height'] ) )
-		$input['splash_height'] = '400';
 
 	$input['splash_height'] = $input['splash_height'];
-
-	if ( ! isset( $input['show_num_features'] ) )
-		$input['show_num_features'] = '5';
 	
 	$input['show_num_features'] = $input['show_num_features'];
 
