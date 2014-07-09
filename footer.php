@@ -29,7 +29,7 @@
             
             <ul id="footer-nav">
             
-            <!-- li <?php //if (is_home()) { echo " class=\"current_page_item\""; } ?>><a href="<?php //echo esc_url(home_url()); ?>" title="Home">Home</a></li -->				
+            <!-- li <?php //if (is_front_page()) { echo " class=\"current_page_item\""; } ?>><a href="<?php //echo esc_url(home_url()); ?>" title="Home">Home</a></li -->				
             
             <?php wp_list_pages('title_li=&sort_column=menu_order'); ?>
             

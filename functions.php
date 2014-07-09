@@ -174,7 +174,7 @@ add_filter('wp_title', 'netfunktheme_title_blogname');
 if (!function_exists( 'netfunktheme_default_navigation')){
 	function netfunktheme_default_navigation(){
 	?><ul id="nav">
-        <li <?php if (is_home()) { echo " class=\"current_page_item\""; } ?>><a href="<?php echo esc_url(home_url()); ?>" class="blue" title="Home">Home</a></li>				
+        <li <?php if (is_front_page()) { echo " class=\"current_page_item\""; } ?>><a href="<?php echo esc_url(home_url()); ?>" class="blue" title="Home">Home</a></li>				
         <?php wp_list_pages('title_li=&sort_column=menu_order'); ?>
 	  </ul>
 	<?php
@@ -467,7 +467,7 @@ function netfunktheme_breadcrumbs() {
 	$parent_id    = $parent_id_2 = $post->post_parent;
 	$frontpage_id = get_option('page_on_front');
 
-	if (is_home() || is_front_page()) {
+	if (is_front_page()) {
 		
 		if ($show_on_home == 1) echo '<div class="breadcrumbs"><a href="' . $home_link . '">' . $text['home'] . '</a></div>';
 	
