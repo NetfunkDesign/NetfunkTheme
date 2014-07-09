@@ -3,60 +3,59 @@
  theme default index
 */
 
-// netfunktheme default options
+// ~  netfunktheme default options
 
-
+// splash image height
 if ( ! isset( $netfunk_general_options['splash_height'] ) )
 	$netfunk_general_options['splash_height'] = '400';
-	
-
+// show welcome message, or not
 if ( ! isset( $theme_options['show_welcome_message'] ) )
 	$theme_options['show_welcome_message'] = 'yes';
 if ( ! array_key_exists( $theme_options['show_welcome_message'], $onoff_options ) )
 	$theme_options['show_welcome_message'] = 'yes';
-
+// show featured posts 
 if ( ! isset( $theme_options['show_featured_content'] ) )
 	$theme_options['show_featured_content'] = 'yes';
-if ( ! array_key_exists( $theme_options['show_welcome_message'], $onoff_options ) )
-	$theme_options['show_featured_content'] = 'yes';
+// number of featured splash images to show 
+if ( ! isset( $netfunk_general_options['show_num_features'] ) )
+	$netfunk_general_options['show_num_features'] = '4';
 //show_posts_on_home
 if ( ! isset( $theme_options['show_posts_on_home'] ) )
 	$theme_options['show_posts_on_home'] = 'yes';
 if ( ! array_key_exists( $theme_options['show_posts_on_home'], $onoff_options ) )
 	$theme_options['show_posts_on_home'] = 'yes';
-
+// show bottom content on front page
 if ( ! isset( $theme_options['show_front_page_bottom_content'] ) )
 	$theme_options['show_front_page_bottom_content'] = 'yes';
 if ( ! array_key_exists( $theme_options['show_front_page_bottom_content'], $onoff_options ) )
 	$theme_options['show_front_page_bottom_content'] = 'yes';
-
+// show sidebar on front page
 if ( ! isset( $theme_options['show_front_page_sidebar'] ) )
 	$theme_options['show_front_page_sidebar'] = 'yes';
 if ( ! array_key_exists( $theme_options['show_front_page_sidebar'], $onoff_options ) )
 	$theme_options['show_front_page_sidebar'] = 'yes';
-
+// show the primary sidebar
 if ( ! isset( $theme_options['show_front_page_primary_sidebar'] ) )
 	$theme_options['show_front_page_primary_sidebar'] = 'yes';
 if ( ! array_key_exists( $theme_options['show_front_page_primary_sidebar'], $onoff_options ) )
 	$theme_options['show_front_page_primary_sidebar'] = 'yes';
-
+// show the secondary sidebar
 if ( ! isset( $theme_options['show_front_page_secondary_sidebar'] ) )
 	$theme_options['show_front_page_secondary_sidebar'] = 'no';
 if ( ! array_key_exists( $theme_options['show_front_page_secondary_sidebar'], $onoff_options ) )
 	$theme_options['show_front_page_secondary_sidebar'] = 'no';
-
+// default welcome title input
 if ( ! isset( $theme_options['welcome_title'] ) )
 $theme_options['welcome_title'] = '<span style="color: #30b0c4">Netfunk</span><i>Theme...</i>';
-
+// default welcome message input
 if ( ! isset( $theme_options['welcome_text'] ) )
 $theme_options['welcome_text'] = 'Responsive, Foundation 5, HTML5 "Smart" theme by NetfunkDesign. Provides custom widgets for the front page and other dynamic content areas to offer a customizable layout suitable for both business and multimedia websites a like. ';
-
+// default more about button label
 if ( ! isset( $theme_options['more_about_title'] ) )
 $theme_options['more_about_title'] = 'More About NetfunkTheme';
-
+// default about url
 if ( ! isset( $theme_options['more_about_uri'] ) )
 $theme_options['more_about_uri'] = '/about/';
-
 
 ?>
 

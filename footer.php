@@ -87,14 +87,6 @@
 
 <?php wp_footer(); ?>
 
-<script>
-    jQuery(document).foundation('abide','events');
-	jQuery(document).foundation('dropdown');
-	jQuery(document).foundation('equalizer');
-	jQuery(document).foundation('orbit');
-	jQuery(document).foundation('tooltip');
-</script>
-
 </body>
 
 </html>

@@ -4,7 +4,7 @@
 
 /* netfunktheme admin CSS addon */
 function netfunktheme_foundation_css() {
-  wp_register_style( 'netfunktheme_admin_foundation', get_template_directory_uri(). '/foundation5/css/foundation.custom.css' );
+  wp_register_style( 'netfunktheme_admin_foundation', get_template_directory_uri(). '/css/foundation.custom.css' );
   wp_enqueue_style( 'netfunktheme_admin_foundation' );
   wp_register_style( 'font-awesome-admin', get_template_directory_uri() . '/css/font-awesome.min.css' );
   wp_enqueue_style( 'font-awesome-admin' );

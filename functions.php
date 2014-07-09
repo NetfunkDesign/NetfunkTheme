@@ -203,14 +203,14 @@ if (!function_exists( 'netfunktheme_user_menu')){
 	global $current_user;
 	?>		
 	
-    <ul id="nav">
+    <ul id="nav" class="right">
 	<?php  
 		
 		if ( is_user_logged_in()) { 
 			printf( __('<li><span data-tooltip class="has-tip [tip-bottom]" title="Click to view your author page"><a href="%1$s" class="user1">Welcome %2$s</a></span></li>', 'netfunktheme'), home_url() . '/?author='.$current_user->ID, $current_user->display_name ); 
 	?>
-        <li><a href="#" class="link" title="Click here to view the blog control panel"><i class="fa fa-desktop"></i> &nbsp; Control Panel</a>
-            <ul class="user-nav-dropdown text-left">
+        <li class="has-dropdown"><a href="#" class="link" title="Click here to view the blog control panel"><i class="fa fa-desktop"></i> &nbsp; Control Panel</a>
+            <ul class="user-nav-dropdown text-left dropdown">
                 <?php $menu_list = do_action('netfunktheme_user_dropdown_menu'); ?>
             </ul>
         </li>
@@ -913,24 +913,24 @@ add_action('netfunktheme_about_the_author','netfunktheme_about_the_author',1,0);
 /* register netfunktheme javascript  */
 function  netfunktheme_register_js() {
 	if (!is_admin()) {
-		wp_register_script('foundation-script', get_template_directory_uri() . '/foundation5/js/foundation.min.js', array('jquery'), 'jquery', '', false);
-		wp_register_script('foundation-orbit-script', get_template_directory_uri() . '/foundation5/js/foundation/foundation.orbit.js', array('jquery'), 'jquery', '', false);
-		wp_register_script('foundation-equalizer-script', get_template_directory_uri() . '/foundation5/js/foundation/foundation.equalizer.js', array('jquery'), 'jquery', '', false);
-		wp_register_script('foundation-reveal-script', get_template_directory_uri() . '/foundation5/js/foundation/foundation.reveal.js', array('jquery'), 'jquery', '', false);
-		wp_register_script('foundation-tooltip-script', get_template_directory_uri() . '/foundation5/js/foundation/foundation.tooltip.js', array('jquery'), 'jquery', '', false);
-		wp_register_script('modernizr-script', get_template_directory_uri() . '/foundation5/js/vendor/modernizr.js', array('jquery'), 'jquery', '', false);
-		wp_register_script('fastclick-script', get_template_directory_uri() . '/foundation5/js/vendor/fastclick.js', array('jquery'), 'jquery', '', false);
+		wp_register_script('foundation-script', get_template_directory_uri() . '/includes/foundation-5.3.0/js/foundation.min.js', array('jquery'), 'jquery', '', false);
+		wp_register_script('modernizr-script', get_template_directory_uri() . '/includes/foundation-5.3.0/js/vendor/modernizr.js', array('jquery'), 'jquery', '', false);
+		wp_register_script('fastclick-script', get_template_directory_uri() . '/includes/foundation-5.3.0/js/vendor/fastclick.js', array('jquery'), 'jquery', '', false);
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('foundation-script');
-		wp_enqueue_script('foundation-orbit-script');
-		wp_enqueue_script('foundation-equalizer-script');
-		wp_enqueue_script('foundation-reveal-script');
-		wp_enqueue_script('foundation-tooltip-script');
 		wp_enqueue_script('modernizr-script');
 		wp_enqueue_script('fastclick-script');
 	}
 }
 add_action('wp_enqueue_scripts', 'netfunktheme_register_js');
+
+/* Init Foundation 5 */
+function netfunktheme_foundation_init() {
+  if ( !is_admin() ) {
+    echo '<script> jQuery(document).foundation(); </script>';
+  }
+}
+add_action( 'wp_footer', 'netfunktheme_foundation_init');
 
 /* netfunktheme custom javascript (header) */
 if (!function_exists( 'netfunktheme_custom_javascript_top')){
@@ -958,17 +958,17 @@ add_action('wp_footer', 'netfunktheme_custom_javascript_bottom');
 
 /* register netfunktheme css  */
 function netfunktheme_theme_styles() {
-	wp_register_style( 'normalize', get_template_directory_uri() . '/foundation5/css/normalize.css' );
-	wp_register_style( 'superfish', get_template_directory_uri() . '/css/superfish.css' );
-	wp_register_style( 'foundation', get_template_directory_uri(). '/foundation5/css/foundation.css' );
+	wp_register_style( 'normalize', get_template_directory_uri() . '/includes/foundation-5.3.0/css/normalize.css' );
+	wp_register_style( 'foundation', get_template_directory_uri(). '/includes/foundation-5.3.0/css/foundation.css' );
+	//wp_register_style( 'superfish', get_template_directory_uri() . '/css/superfish.css' );
 	wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css' );
 	wp_register_style( 'web-icons', get_template_directory_uri() . '/css/webicons.css' );
 	wp_register_style( 'web-fonts', get_template_directory_uri() . '/css/fonts/stylesheet.css' );
 	wp_register_style( 'theme-css', get_template_directory_uri() . '/style.css' );
 	
 	wp_enqueue_style( 'normalize' );
-	wp_enqueue_style( 'superfish' );
 	wp_enqueue_style( 'foundation' );
+	//wp_enqueue_style( 'superfish' );
 	wp_enqueue_style( 'font-awesome' );
 	wp_enqueue_style( 'web-icons' );
 	wp_enqueue_style( 'web-fonts' );
