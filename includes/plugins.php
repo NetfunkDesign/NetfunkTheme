@@ -6,32 +6,26 @@ netfunktheme theme plugins system
 
 */
 
-
 add_action( 'admin_init', 'theme_plugin_options_init' );
 add_action( 'admin_menu', 'theme_plugin_options_add_page' );
 
 $request_action = (!empty($_REQUEST['action']) ? $_REQUEST['action'] : '');
 
-
 // register theme plugin settings
 function theme_plugin_options_init(){
-
-	register_setting( 'netfunktheme_plugin_options', 'netfunktheme_theme_plugin_options', 'theme_plugin_options_validate' );
-
+	register_setting( 'netfunktheme-options-plugins', 'netfunktheme_options_plugins', 'netfunktheme_options_plugins_validate' );
+	/* populate predfined settings */
+    $options = get_option('netfunktheme_options_plugins');
+    add_option( 'netfunktheme_options_plugins', $options,'','yes');
 }
-
 
 // add plugin submenu to netfunktheme theme menu
 function theme_plugin_options_add_page() {
-
 	add_submenu_page('theme_settings',__( 'NetfunkTheme Theme Plugins' ),__('Plugins' ),'edit_theme_options','theme_plugins', 'theme_plugins_options_page' );
-
 }
 
 // missing plugin admin notices 
-
 add_action( 'admin_notices', 'theme_plugin_notices' );
-
 function theme_plugin_notices(){
 	
      global $current_screen;
@@ -40,63 +34,43 @@ function theme_plugin_notices(){
           echo '<div><p>Warning - changing settings on these pages may cause problems with your website\'s design!</p></div>';
 }
 
-
-
 /* theme plugin shortcode generator */
-
 if (!function_exists( 'netfunktheme_member_profile_shortcode')){
 
-
 	// netfunktheme_theme_plugin_shortcode ( $shortcode , $function ) 
-	
 	// netfunktheme_theme_plugin_shortcode ( 'netfunktheme_member_edit_page', 'netfunktheme_edit_profile_page' ) 
-	
 	// shortcode would be '[netfunktheme_member_edit_page]'
-	
 
 	function netfunktheme_theme_plugin_shortcode ( $shortcode, $function ) {
-		
 		add_shortcode ($shortcode, $function);
-
 	}
 }
 
 add_action( 'netfunktheme_theme_plugin_shortcode', 'netfunktheme_theme_plugin_shortcode' );
 
 
-
-
-
-
-
-
-
 // validate theme plugin options
+function netfunktheme_options_plugins_validate( $input ) {
 	
-function theme_plugin_options_validate( $input ) {
-	
-	$options = get_option( 'netfunktheme_theme_plugin_options' );
+	$options = get_option( 'netfunktheme_options_plugins' );
 
-	if (isset($input)){
+	if (isset($input) && !empty($input)){
 
 		foreach ( $input as $plugin ){
 
 			if (isset($input['action']) && $input['action'] != 'delete-selected'){
 
 				// activate plugin
-				
 				if (isset($input['action']) && $input['action'] == 'activate-selected')
 					
 					$activate = 1;
 				
 				// deactivate plugin
-				
 				else if (isset($input['action']) && $input['action'] == 'deactivate-selected')
 				
 					$activate = 0;
 		
 				// plugin options
-				
 				if ( $plugin != 'action')
 					$options[$plugin] = wp_filter_nohtml_kses( $activate );
 
@@ -104,48 +78,37 @@ function theme_plugin_options_validate( $input ) {
 				
 				// delete plugin
 				remove_plugin($plugin);
-
 			}
-
 		}
 	}
-	
 	return $options;
-
 }
-
-
 
 
 /* remove plugin */
 
 function remove_plugin($plugin) {
 
-	$options = get_option( 'netfunktheme_theme_plugin_options' );
-	
+	$options = get_option( 'netfunktheme_options_plugins' );
+
 	$plugin_file = get_template_directory() . '/plugins/'.$plugin.'/';
 
 	// does plugin exist?
 	if (is_dir($plugin_file)) {
 
 		$objects = scandir($plugin_file);
-		
+
 		// delete files recursivly 
-		
+
 		foreach ($objects as $object) {
-
 			if ($object != "." && $object != "..") {
-			
 				if (filetype($plugin_file."/".$object) == "dir") remove_plugin($plugin_file."/".$object); else unlink($plugin_file."/".$object);
-
 			}
-
 		}
 		
 		reset($objects);
 
 		rmdir($plugin_file);
-		 
 
 		// purge plugins settings 
 		
@@ -160,18 +123,13 @@ function remove_plugin($plugin) {
 		
 		// update option array
 		
-		update_option('netfunktheme_theme_plugin_options', $options);
+		update_option('netfunktheme_options_plugins', $options);
 		
 		//return $options;
 		
 		*/
-
-
 	}
-   
 }
-
-
 
 
 /* 
@@ -181,50 +139,42 @@ description, version, authr, author url and plugin url.
 
 */
 
-
 function validate_theme_plugin($file){
 
 	$slug = basename($file, ".php");
 	$plugin = file_get_contents( $file );
 	
 	// plugin name
-	
 	$title = 'Plugin Name:';
 	$title_pattern = preg_quote($title, '/');
 	$title_pattern = "/^.*$title_pattern.*\$/m";
 	
 	// plugin description
-	
 	$description = 'Plugin Description:';
 	$description_pattern = preg_quote($description, '/');
 	$description_pattern = "/^.*$description_pattern.*\$/m";
 	
 	// plugin version
-	
 	$version = 'Plugin Version:';
 	$version_pattern = preg_quote($version, '/');
 	$version_pattern = "/^.*$version_pattern.*\$/m";
 	
 	// plugin description
-	
 	$author = 'Plugin Author:';
 	$author_pattern = preg_quote($author, '/');
 	$author_pattern = "/^.*$author_pattern.*\$/m";
 	
 	// plugin author website
-	
 	$author_url = 'Plugin Author URL:';
 	$author_url_pattern = preg_quote($author_url, '/');
 	$author_url_pattern = "/^.*$author_url_pattern.*\$/m";
 	
 	// plugin website
-	
 	$plugin_url = 'Plugin URL:';
 	$plugin_url_pattern = preg_quote($plugin_url, '/');
 	$plugin_url_pattern = "/^.*$plugin_url_pattern.*\$/m";
 
 	// plugin arguments array
-
 	$plugin_args = array();
 	
 
@@ -264,18 +214,15 @@ function validate_theme_plugin($file){
 
 }
 
-
-
-
 /* display valid plugins list */
 				
 //get validated theme plugins 
 
 function get_valid_theme_plugins(){
 
-	settings_fields( 'netfunktheme_plugin_options' ); 
+	settings_fields( 'netfunktheme-options-plugins' ); 
 	
-	$options = get_option( 'netfunktheme_theme_plugin_options' );
+	$options = get_option( 'netfunktheme_options_plugins' );
 	
 	$folder_paths = glob (get_template_directory() . '/plugins/*/*.php');
 
@@ -294,7 +241,7 @@ function get_valid_theme_plugins(){
 		
 			echo '<tr id="plugin-name" class="'.(isset($options[$args[0]]) && $options[$args[0]] == 1 ? 'active' : 'inactive').'">'
 			
-				.'<th scope="row"> <input type="checkbox" name="netfunktheme_theme_plugin_options['.$args[0].']" id="netfunktheme_theme_plugin_options['.$args[0].']" value="1"> </th>'
+				.'<th scope="row"> <input type="checkbox" name="netfunktheme_options_plugins['.$args[0].']" id="netfunktheme_options_plugins['.$args[0].']" value="1"> </th>'
 				
 				.'<td class="plugin-title"> <strong>' . $args[1] . '</strong> '
 				
@@ -319,7 +266,6 @@ function get_valid_theme_plugins(){
 	}
 	
 }
-
 
 /* theme plugins options page */
 
@@ -407,7 +353,7 @@ function theme_plugins_options_page() {
 
 			<div class="actions bulkactions">
 	
-				<select name="netfunktheme_theme_plugin_options[action]" id="netfunktheme_theme_plugin_options[action]">
+				<select name="netfunktheme_options_plugins[action]" id="netfunktheme_options_plugins[action]">
 				
 					<option selected="selected" value="-1"> Bulk Actions </option>
 					
@@ -493,7 +439,7 @@ function theme_plugins_options_page() {
 
 	/* Debug  */
 				
-		//$options = get_option( 'netfunktheme_theme_plugin_options' );
+		//$options = get_option( 'netfunktheme_options_plugins' );
 					
 		//echo '<pre>';
 		//echo '<h6>debug</h6>';
@@ -504,54 +450,44 @@ function theme_plugins_options_page() {
 
 
 /* activate theme plugin */
-
 if ( $request_action == 'activate' && !empty( $_REQUEST['plugin'] ) ) {
 
-	$options = get_option( 'netfunktheme_theme_plugin_options' );
+	$options = get_option( 'netfunktheme_options_plugins' );
 
 	$plugin = $_REQUEST['plugin'];
 	
 	$options[$plugin] = wp_filter_nohtml_kses( 1 );
 
-	update_option('netfunktheme_theme_plugin_options', $options); //update option array
+	update_option('netfunktheme_options_plugins', $options); //update option array
 
 }
 
-
 /* deactivate theme plugin */
-
 if ( $request_action == 'deactivate' && !empty( $_REQUEST['plugin'] ) ) {
 
-	$options = get_option( 'netfunktheme_theme_plugin_options' );
+	$options = get_option( 'netfunktheme_options_plugins' );
 
 	$plugin = $_REQUEST['plugin'];
 	
 	$options[$plugin] = wp_filter_nohtml_kses( 0 );
 
-	update_option('netfunktheme_theme_plugin_options', $options); //update option array
+	update_option('netfunktheme_options_plugins', $options); //update option array
 
 }
 
-
 /* include valid theme plugin files */
-
 $folder_paths = glob (get_template_directory() . '/plugins/*/*.php');
 		
-$active_plugins = get_option( 'netfunktheme_theme_plugin_options' );
+$active_plugins = get_option( 'netfunktheme_options_plugins' );
 
 foreach ($folder_paths as $file) {
 	
 	// check for active plugins 
-	
 	if ($args = validate_theme_plugin($file)){
 		
 		if (isset($active_plugins[$args[0]]) && $active_plugins[$args[0]] == 1)
 			require_once($file);
-	
 	}
-
 }
 
-
-
-
+// EOF

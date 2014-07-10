@@ -4,12 +4,9 @@
 	
 	$user_id = get_the_author_meta( 'ID' );
 
-
 ?>
 
 <div id="container">
-
-<div id="blackoutTrigger"></div>
 
 	<div class="content">
 

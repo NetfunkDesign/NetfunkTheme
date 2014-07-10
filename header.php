@@ -27,7 +27,7 @@
 
       <ul class="title-area">
 
-        <li class="logo-icon">
+        <li class="logo-icon small-only-text-center">
           <?php 
 			$header_image = get_header_image();
             if ( ! empty( $header_image ) ) { ?>
@@ -41,13 +41,13 @@
 
         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
 
-        <li class="toggle-topbar menu-icon">
+        <!--li class="toggle-topbar menu-icon">
           <a href="#"><span></span></a>
-        </li>
+        </li-->
 
       </ul>
 
-      <section class="top-bar-section">
+      <section class="top-bar-section hide-for-small">
 
         <!-- right nav section -->
 		<?php do_action('netfunktheme_navigation_menu'); ?>

@@ -1,8 +1,6 @@
 <?php get_header(); ?>
 
 <div id="container" class="row">
-
-<div id="blackoutTrigger"></div>
     
 <!--content-->
     

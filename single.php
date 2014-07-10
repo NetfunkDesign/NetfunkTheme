@@ -4,74 +4,6 @@
  	netfunktheme single post
 */
 
-// netfunktheme default options
-
-//posts_splash_type
-if ( ! isset( $netfunk_post_options['posts_splash_type'] ) )
-	$netfunk_post_options['posts_splash_type'] = '1';
-if ( ! array_key_exists( $netfunk_post_options['posts_splash_type'], $post_splash_options ) )
-	$netfunk_post_options['posts_splash_type'] = '1';
-//show_post_meta 
-if ( ! isset( $netfunk_post_options['show_post_meta'] ) )
-	$netfunk_post_options['show_post_meta'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_post_meta'], $onoff_options ) )
-	$netfunk_post_options['show_post_meta'] = 'yes';
-//show_post_footer_meta 
-if ( ! isset( $netfunk_post_options['show_post_footer_meta'] ) )
-	$netfunk_post_options['show_post_footer_meta'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_post_footer_meta'], $onoff_options ) )
-	$netfunk_post_options['show_post_footer_meta'] = 'yes';
-//show_post_thumbnail 
-if ( ! isset( $netfunk_post_options['show_post_thumbnail'] ) )
-	$netfunk_post_options['show_post_thumbnail'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_post_thumbnail'], $onoff_options ) )
-	$netfunk_post_options['show_post_thumbnail'] = 'yes';
-//show_post_comments 
-if ( ! isset( $netfunk_post_options['show_post_comments'] ) )
-	$netfunk_post_options['show_post_comments'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_post_comments'], $onoff_options ) )
-	$netfunk_post_options['show_post_comments'] = 'yes';
-//show_post_author 
-if ( ! isset( $netfunk_post_options['show_post_author'] ) )
-	$netfunk_post_options['show_post_author'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_post_author'], $onoff_options ) )
-	$netfunk_post_options['show_post_author'] = 'yes';
-//show_nav_above 
-if ( ! isset( $netfunk_post_options['show_nav_above'] ) )
-	$netfunk_post_options['show_nav_above'] = 'no';
-if ( ! array_key_exists( $netfunk_post_options['show_nav_above'], $onoff_options ) )
-	$netfunk_post_options['show_nav_above'] = 'no';
-//show_nav_below
-if ( ! isset( $netfunk_post_options['show_nav_below'] ) )
-	$netfunk_post_options['show_nav_below'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_nav_below'], $onoff_options ) )
-	$netfunk_post_options['show_nav_below'] = 'yes';
-//posts_nav_type
-if ( ! isset( $netfunk_post_options['posts_nav_type'] ) )
-	$netfunk_post_options['posts_nav_type'] = '0';
-if ( ! array_key_exists( $netfunk_post_options['posts_nav_type'], $post_nav_options ) )
-	$netfunk_post_options['posts_nav_type'] = '0';
-//show_post_bottom_content
-if ( ! isset( $netfunk_post_options['show_post_bottom_content'] ) )
-	$netfunk_post_options['show_post_bottom_content'] = 'no';
-if ( ! array_key_exists( $netfunk_post_options['show_post_bottom_content'], $onoff_options ) )
-	$netfunk_post_options['show_post_bottom_content'] = 'no';
-//show_posts_sidebar
-if ( ! isset( $netfunk_post_options['show_posts_sidebar'] ) )
-	$netfunk_post_options['show_posts_sidebar'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_posts_sidebar'], $onoff_options ) )
-	$netfunk_post_options['show_posts_sidebar'] = 'yes';
-//show_post_primary_sidebar
-if ( ! isset( $netfunk_post_options['show_post_primary_sidebar'] ) )
-	$netfunk_post_options['show_post_primary_sidebar'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_post_primary_sidebar'], $onoff_options ) )
-	$netfunk_post_options['show_post_primary_sidebar'] = 'yes';
-//show_post_secondary_sidebar
-if ( ! isset( $netfunk_post_options['show_post_secondary_sidebar'] ) )
-	$netfunk_post_options['show_post_secondary_sidebar'] = 'yes';
-if ( ! array_key_exists( $netfunk_post_options['show_post_secondary_sidebar'], $onoff_options ) )
-	$netfunk_post_options['show_post_secondary_sidebar'] = 'yes';
-
 ?>
 
 <?php get_header(); ?>
@@ -96,7 +28,8 @@ if ( ! array_key_exists( $netfunk_post_options['show_post_secondary_sidebar'], $
 	
 	# 	0 = Splash Img | Hide Thumbnail
 	# 	1 = Splash Img + Show Thumbnail 
-	# 	2 = No Splash 
+	# 	2 = No Splash | Hide Thumbnail 
+	# 	3 = No Splash + Show Thumbnail 
 	
 	*/
 	 
@@ -106,21 +39,12 @@ if ( ! array_key_exists( $netfunk_post_options['show_post_secondary_sidebar'], $
 	 if ( $splash_image != '' ){ // skip if no image
 	 
 		 if (isset($netfunk_post_options['posts_splash_type'])) {
-			
-			 if ($netfunk_post_options['posts_splash_type'] == 0) {
-				// keep splash img
-			} 
-			else if ($netfunk_post_options['posts_splash_type'] == 1) {
-				// keep splash img 
-			} 
-			else if ($netfunk_post_options['posts_splash_type'] == 2) {
+			 
+			if ($netfunk_post_options['posts_splash_type'] <= 2) {
 				// clear splash img
 				$splash_image = '';
 			}
 		
-		} else {
-			// option not yet set. falls back to defaut: '0'
-			$splash_image = netfunktheme_catch_post_image(); 
 		}
 	
 	}
@@ -150,8 +74,6 @@ if ( ! array_key_exists( $netfunk_post_options['show_post_secondary_sidebar'], $
     </div>
     
     <?php } ?>
-
-    <div id="blackoutTrigger"></div>
 
 	<div class="content content-pad">
 

@@ -24,7 +24,6 @@ endif;
 ?>
 
 <!-- end featured content slideshow -->
-<div id="blackoutTrigger"></div>
 <div class="content">
 <div class="row">
 <div class="<?php echo (!isset($_GET['action']) ? "large-12" : "large-9") ?> small-12 columns">

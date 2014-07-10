@@ -5,8 +5,6 @@
 
 <div id="container" class="row">
 
-<div id="blackoutTrigger"></div>
-
 	<div style="padding: 20px;"></div>
 
 	<div class="large-12">

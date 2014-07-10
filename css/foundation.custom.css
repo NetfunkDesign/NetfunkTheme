@@ -19,7 +19,7 @@
 
 
 .theme-settings-nav { 
-  padding: 20px 0px 10px 0px; 
+  padding: 20px 0px 12px 0px; 
   border-bottom: 1px #CCC solid;}
 
 .theme-settings-nav ul { 
@@ -31,13 +31,14 @@
   display:inline-block; 
   padding: 0px; 
   margin: 0px; }
-
+ 
 .theme-settings-nav ul li a { 
   padding: 10px 15px; 
   background: #EEE; 
   border: 1px #CCC solid; 
   font-weight: 600; 
-  border-radius: 4px 4px 0px 0px!important; }
+  border-radius: 4px 4px 0px 0px!important;
+  text-decoration: none; }
 
 .theme-settings-nav ul li a.current {
   background-color: rgb(33, 117, 155);

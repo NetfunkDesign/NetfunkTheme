@@ -4,51 +4,13 @@
  	netfunktheme pages
 */
 
-// netfunktheme default options
-
-//posts_splash_type
-if ( ! isset( $netfunk_page_options['page_splash_type'] ) )
-	$netfunk_page_options['page_splash_type'] = '0';
-if ( ! array_key_exists( $netfunk_page_options['page_splash_type'], $post_splash_options ) )
-	$netfunk_page_options['page_splash_type'] = '0';
-//show_page_comments
-if ( ! isset( $netfunk_page_options['show_page_comments'] ) )
-	$netfunk_page_options['show_page_comments'] = 'yes';
-if ( ! array_key_exists( $netfunk_page_options['show_page_comments'], $onoff_options ) )
-	$netfunk_page_options['show_page_comments'] = 'yes';
-//show_page_author 
-if ( ! isset( $netfunk_page_options['show_page_author'] ) )
-	$netfunk_page_options['show_page_author'] = 'yes';
-if ( ! array_key_exists( $netfunk_page_options['show_page_author'], $onoff_options ) )
-	$netfunk_page_options['show_page_author'] = 'yes';
-
-if ( ! isset( $netfunk_page_options['show_page_bottom_content'] ) )
-	$netfunk_page_options['show_page_bottom_content'] = 'yes';
-if ( ! array_key_exists( $netfunk_page_options['show_page_bottom_content'], $onoff_options ) )
-	$netfunk_page_options['show_page_bottom_content'] = 'yes';
-
-if ( ! isset( $netfunk_page_options['show_pages_sidebar'] ) )
-	$netfunk_page_options['show_pages_sidebar'] = 'yes';
-if ( ! array_key_exists( $netfunk_page_options['show_pages_sidebar'], $onoff_options ) )
-	$netfunk_page_options['show_pages_sidebar'] = 'yes';
-
-if ( ! isset( $netfunk_page_options['show_page_primary_sidebar'] ) )
-	$netfunk_page_options['show_page_primary_sidebar'] = 'no';
-if ( ! array_key_exists( $netfunk_page_options['show_page_primary_sidebar'], $onoff_options ) )
-	$netfunk_page_options['show_page_primary_sidebar'] = 'no';
-
-if ( ! isset( $netfunk_page_options['show_page_secondary_sidebar'] ) )
-	$netfunk_page_options['show_page_secondary_sidebar'] = 'yes';
-if ( ! array_key_exists( $netfunk_page_options['show_page_secondary_sidebar'], $onoff_options ) )
-	$netfunk_page_options['show_page_secondary_sidebar'] = 'yes';
-
 ?>
 
 <?php get_header(); ?>
 
 <div id="container">
 
-<?php if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] != '2') { ?>
+<?php if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] <= '2') { ?>
 
 	<?php 
     
@@ -111,7 +73,8 @@ if ( ! array_key_exists( $netfunk_page_options['show_page_secondary_sidebar'], $
 						
 							# 	0 = Splash Img | Hide Thumbnail
 							# 	1 = Splash Img + Show Thumbnail 
-							# 	2 = No Splash 
+							# 	2 = No Splash | Hide Thumbnail 
+							# 	3 = No Splash + Show Thumbnail
 						
 							*/
 						

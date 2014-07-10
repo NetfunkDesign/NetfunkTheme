@@ -3,8 +3,6 @@
 
 <div id="container" class="row">
 
-<div id="blackoutTrigger"></div>
-
     <div class="row content">
 
         <div class="large-9 columns left">

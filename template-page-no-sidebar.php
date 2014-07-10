@@ -8,13 +8,10 @@ Template Name: Page (No Sidebar)
 
 <?php get_header(); ?>
 
-
 <div id="subhead_container" class="page">
-
     
     <div id="container" class="row">
     
-
 		<div class="large-12 columns">
 
 			<?php the_post(); ?>
@@ -42,15 +39,11 @@ Template Name: Page (No Sidebar)
             </div>
             
             </div>
-        
-        
+
         </div>
-        
-        
+
 	</div> <!--end container-->
 
 </div> <!--end container outside-->
 
-
 <?php get_footer(); ?>
-
