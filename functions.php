@@ -58,7 +58,7 @@ if (!function_exists( 'netfunktheme_setup')){
 			
 		// Add support for custom backgrounds
 		$args = array(
-		'default-color' => '#000',
+		'default-color' => '#FFF',
 		'wp-head-callback' => '_custom_background_cb');
 		add_theme_support( 'custom-background', $args );
 
@@ -188,16 +188,46 @@ add_action('netfunktheme_default_navigation','netfunktheme_default_navigation',1
 /* netfunktheme navigation menu */ 
 if (!function_exists( 'netfunktheme_navigation_menu')){
 	function netfunktheme_navigation_menu(){
+		
 		$is_nav = '' ;
-		$is_nav = wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' , 'menu_id' => 'nav', 'fallback_cb' => '', 'echo' => false ) );
+		
+		$defaults = array(
+			'theme_location'  => 'primary',
+			'menu'            => '',
+			'container'       => false,
+			'container_class' => '',
+			'container_id'    => '',
+			'menu_class'      => 'left',
+			'menu_id'         => 'nav',
+			'echo'            => false,
+			'fallback_cb'     => '',
+			'before'          => '',
+			'after'           => '',
+			'link_before'     => '',
+			'link_after'      => '',
+			'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+			'depth'           => 0,
+			'walker'          => ''
+		);
+
+		$is_nav = wp_nav_menu( $defaults );
 		if ($is_nav == '') { 
 			netfunktheme_default_navigation();
 		 } else {
         	echo ($is_nav); 
 		}
+		
+		/*  menu hack to support foundation .top-bar */
+		echo '<script>
+	    jQuery("#nav.left .menu-item-has-children").addClass(\'has-dropdown\');
+		jQuery("#nav.left .menu-item-has-children").addClass(\'not-click\');
+		jQuery("#nav.left .menu-item-has-children .sub-menu").addClass(\'dropdown\');
+	  </script>';
+		
 	}
 }
 add_action('netfunktheme_navigation_menu','netfunktheme_navigation_menu',1,0);
+
 
 /* netfunktheme navigation menu */
 if (!function_exists( 'netfunktheme_user_menu')){
@@ -227,7 +257,13 @@ if (!function_exists( 'netfunktheme_user_menu')){
      
      <?php }?>
      
-     	<li><a href="<?php echo home_url() ?>/wp-login.php" class="link">Login</a></li>
+     	<li class="has-dropdown"><a href="#" class="link">Login</a>
+        
+          <ul class="dropdown user-login-dropdown">
+            <?php netfunktheme_login_form(); ?>
+          </ul>
+        
+        </li>
 	 
 	<?php } ?>
     
@@ -235,6 +271,52 @@ if (!function_exists( 'netfunktheme_user_menu')){
 	}	
 }
 add_action('netfunktheme_user_menu','netfunktheme_user_menu',1,0);
+
+
+function netfunktheme_login_form( $args = array() ) {
+	$defaults = array( 'echo' => true,
+		'redirect' => site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
+		'form_id' => 'loginform',
+		'label_username' => __( 'Username' ),
+		'label_password' => __( 'Password' ),
+		'label_remember' => __( 'Remember Me' ),
+		'label_log_in' => __( 'Log In' ),
+		'id_username' => 'user_login',
+		'id_password' => 'user_pass',
+		'id_remember' => 'rememberme',
+		'id_submit' => 'wp-submit',
+		'remember' => true,
+		'value_username' => '',
+		'value_remember' => false, // Set this to true to default the "Remember me" checkbox to checked
+	);
+	$args = wp_parse_args( $args, apply_filters( 'login_form_defaults', $defaults ) );
+
+	$form = '
+		<form name="' . $args['form_id'] . '" id="' . $args['form_id'] . '" action="' . site_url( 'wp-login.php', 'login' ) . '" method="post">
+			' . apply_filters( 'login_form_top', '' ) . '
+			<div class="login-username">
+				<label for="' . esc_attr( $args['id_username'] ) . '">' . esc_html( $args['label_username'] ) . '</label>
+				<input type="text" name="log" id="' . esc_attr( $args['id_username'] ) . '" class="input" value="' . esc_attr( $args['value_username'] ) . '" size="20" tabindex="10" />
+			</div>
+			<div class="login-password">
+				<label for="' . esc_attr( $args['id_password'] ) . '">' . esc_html( $args['label_password'] ) . '</label>
+				<input type="password" name="pwd" id="' . esc_attr( $args['id_password'] ) . '" class="input" value="" size="20" tabindex="20" />
+			</div>
+			' . apply_filters( 'login_form_middle', '' ) . '
+			' . ( $args['remember'] ? '<div class="login-remember"><label><input name="rememberme" type="checkbox" id="' . esc_attr( $args['id_remember'] ) . '" value="forever" tabindex="90"' . ( $args['value_remember'] ? ' checked="checked"' : '' ) . ' /> ' . esc_html( $args['label_remember'] ) . '</label></div>' : '' ) . '
+			<div class="login-submit">
+				<input type="submit" name="wp-submit" id="' . esc_attr( $args['id_submit'] ) . '" class="button small success radius right" value="' . esc_attr( $args['label_log_in'] ) . '" tabindex="100" />
+				<input type="hidden" name="redirect_to" value="' . esc_attr( $args['redirect'] ) . '" />
+			</div>
+			' . apply_filters( 'login_form_bottom', '' ) . '
+		</form>';
+
+	if ( $args['echo'] )
+		echo $form;
+	else
+		return $form;
+}
+add_action('netfunktheme_login_form','netfunktheme_login_form',1,0);
 
 
 /* netfunktheme navigation menu */ 
@@ -294,14 +376,12 @@ add_action('netfunktheme_responsive_nav','netfunktheme_responsive_nav',1,0);
 if (!function_exists( 'netfunktheme_user_dropdown_menu')){
 	function netfunktheme_user_dropdown_menu(){
 	if (!function_exists( 'netfunktheme_member_edit_link')){ ?>
-        <li><a href="<?php echo home_url() ?>/wp-admin/profile.php" class="members">Profile Settings
-        <!--div>Edit your profile, upload a user image, manage personal <br />preferences.</div--></a></li>
+        <li><a href="<?php echo home_url() ?>/wp-admin/profile.php" class="members">Profile Settings</a></li>
 	<?php } ?>
-    <li><a href="<?php echo home_url() ?>/wp-admin/" class="blog">Blog Control Panel
-    <!--div>Make Posts, Upload Media, <br />Manage Blog Specific Settings.</div--></a></li>
+    <li><a href="<?php echo home_url() ?>/wp-admin/" class="blog">Blog Control Panel</a></li>
     <?php if (class_exists('WpPhpBB')) {  
         $admin_url = wpbb_get_admin_link(); // currently logged in ?>	
-        <li><a href="<?php echo home_url() ?>/forum/ucp.php" class="forum">Forum Control Panel<div>Manage Forum posts, Private Messages, Forum Profile, <br />Forum Specific Settings.</div></a></li>
+        <li><a href="<?php echo home_url() ?>/forum/ucp.php" class="forum">Forum Control Panel</a></li>
         <?php if ( !empty( $admin_url ) )  ?>
         <li><a href="<? echo $admin_url ?>">phpBB Administration</a></li>
     <?php } ?>
@@ -958,7 +1038,7 @@ if (!function_exists( 'netfunktheme_custom_javascript_bottom')){
 }
 add_action('wp_footer', 'netfunktheme_custom_javascript_bottom');
 
-/* register netfunktheme css  */
+/* register netfunktheme style sheets  */
 function netfunktheme_theme_styles() {
 	wp_register_style( 'normalize', get_template_directory_uri() . '/includes/foundation-5.3.0/css/normalize.css' );
 	wp_register_style( 'foundation', get_template_directory_uri(). '/includes/foundation-5.3.0/css/foundation.css' );
@@ -966,7 +1046,6 @@ function netfunktheme_theme_styles() {
 	wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css' );
 	wp_register_style( 'web-icons', get_template_directory_uri() . '/css/webicons.css' );
 	wp_register_style( 'web-fonts', get_template_directory_uri() . '/css/fonts/stylesheet.css' );
-	wp_register_style( 'theme-css', get_template_directory_uri() . '/style.css' );
 	
 	wp_enqueue_style( 'normalize' );
 	wp_enqueue_style( 'foundation' );
@@ -974,10 +1053,17 @@ function netfunktheme_theme_styles() {
 	wp_enqueue_style( 'font-awesome' );
 	wp_enqueue_style( 'web-icons' );
 	wp_enqueue_style( 'web-fonts' );
+}
+add_action('wp_print_styles', 'netfunktheme_theme_styles');
+
+
+/* register netfunktheme css  */
+function netfunktheme_theme_css() {
+	wp_register_style( 'theme-css', get_stylesheet_uri() );
 	wp_enqueue_style( 'theme-css' );
 	
 }
-add_action('wp_print_styles', 'netfunktheme_theme_styles');
+add_action('wp_print_styles', 'netfunktheme_theme_css');
 
 /* netfunktheme cutom css action */
 if (!function_exists( 'netfunktheme_custom_css')){

@@ -74,59 +74,15 @@ function netfunktheme_options_bbpress_validate( $input ) {
 
   global $netfunktheme_bbpress_onoff_options, $netfunktheme_bbpress_leftright_options;
 
-  /* validate the input */
-  if ( !isset($input['actionpage_slug']) )
-    $input['actionpage_slug'] = 'forum';
-
-  if ( !isset( $input['show_actionpage_sidebar']) )
-    $input['show_actionpage_sidebar'] = 'yes';
-
-  if ( ! isset( $input['actionpage_sidebar_side']) )
-    $input['actionpage_sidebar_side'] = 'left';
-
   /* get the action page options array */
-  $options_array = get_option('netfunktheme_options_actions');
-  
-  if (is_array($options_array)):
-  
-    foreach ( $options_array as $key => $value ):
-    
-	  //echo $value['actionpage_slug'];
-	  
-	  if ($input['actionpage_slug'] != $value['actionpage_slug']) :
-	    $options = array (
-		  'actionpage_slug' => $value['actionpage_slug'],
-		  'show_actionpage_sidebar' => $value['show_actionpage_sidebar'],
-		  'actionpage_sidebar_side' => $value['actionpage_sidebar_side']);
-	    /* return trimmed options array */
-	    $options_trimmed = array (
-	      $key => $options );
+  $options = get_option('netfunktheme_options_actions');
 
-	  endif;
+  /* up the options array */
+  $options['bbpress']['actionpage_slug'] = (isset($input['actionpage_slug']) ? $input['actionpage_slug'] : 'forum');
+  $options['bbpress']['show_actionpage_sidebar'] = (isset( $input['show_actionpage_sidebar']) ? $input['show_actionpage_sidebar'] : 'yes');
+  $options['bbpress']['actionpage_sidebar_side'] = (isset( $input['actionpage_sidebar_side']) ? $input['actionpage_sidebar_side'] : 'left');
 
-    endforeach;
-
-  else: 
-
-    $options_trimmed = array (); 
-
-  endif;
-
-  $input_options = array (
-	'actionpage_slug' => $input['actionpage_slug'],
-	'show_actionpage_sidebar' => $input['show_actionpage_sidebar'],
-	'actionpage_sidebar_side' => $input['actionpage_sidebar_side'] 
-  );
-  $options_updates = array (
-	'bbpress' => $input_options 
-  );
-
-  if (isset($options_trimmed))
-    $options_updated = array_merge($options_trimmed,$options_updates);
-  else 
-    $options_updated = $options_updates;
-
-  return $options_updated;
+  return $options;
 
 }
 
@@ -169,9 +125,14 @@ function theme_options_bbpress_page() {
           <h3>Give your bbPress action page a name or 'slug'</h3>
 
           <table class="form-table">
-              <tr valign="top"><th scope="row"><?php _e( ' Actionpage Slug', 'netfunktheme-bbpress' ); ?></th>
+              <tr valign="top"><th scope="row"><?php _e( ' Action Page STitle', 'netfunktheme-bbpress' ); ?></th>
                <td>
-                 <input type="text" id="netfunktheme_options_actions[actionpage_slug]" name="netfunktheme_options_actions[actionpage_slug]" size="30" value="<?php echo (isset($options['bbpress']['actionpage_slug']) ? $options['bbpress']['actionpage_slug'] : '' ); ?>"> <label class="description" for="netfunktheme_options_actions[actionpage_slug]"><?php _e( 'The name of the action page ( /?action=whatever )', 'netfunktheme' ); ?></label>
+                 <input type="text" id="netfunktheme_options_actions[actionpage_title]" name="netfunktheme_options_actions[actionpage_title]" size="30" value="<?php echo (isset($options['bbpress']['actionpage_title']) ? $options['bbpress']['actionpage_title'] : '' ); ?>"> <label class="description" for="netfunktheme_options_actions[actionpage_title]"><?php _e( 'The name of the action page', 'netfunktheme' ); ?></label>
+                </td>
+              </tr>
+              <tr valign="top"><th scope="row"><?php _e( ' Action Page Slug', 'netfunktheme-bbpress' ); ?></th>
+               <td>
+                 <input type="text" id="netfunktheme_options_actions[actionpage_slug]" name="netfunktheme_options_actions[actionpage_slug]" size="30" value="<?php echo (isset($options['bbpress']['actionpage_slug']) ? $options['bbpress']['actionpage_slug'] : '' ); ?>"> <label class="description" for="netfunktheme_options_actions[actionpage_slug]"><?php _e( 'The url slug for the action page ( /?action=whatever )', 'netfunktheme' ); ?></label>
                 </td>
               </tr>
             </table> 

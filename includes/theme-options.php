@@ -35,7 +35,7 @@ add_action( 'admin_init', 'netfunktheme_options_init' );
 
 /* netfunktheme admin menu pages */
 function netfunktheme_options_add_page() {
-  add_menu_page( __( 'Theme General Settings'), __('NetfunkTheme') ,'edit_theme_options','theme_settings', 'theme_options_welcome', get_stylesheet_directory_uri('stylesheet_directory') .'/images/theme-icon.png',68 );
+  add_menu_page( __( 'Theme General Settings'), __('NetfunkTheme') ,'edit_theme_options','theme_settings', 'theme_options_welcome', get_template_directory_uri() .'/images/theme-icon.png',68 );
   add_submenu_page('theme_settings',__( ' Welcome' ),			__('Welcome')			,'edit_theme_options','theme_settings', 'theme_options_welcome' );
   add_submenu_page('theme_settings',__( ' General Settings' ),	__('General Settings')	,'edit_theme_options','theme_general',	'theme_options_general');
   add_submenu_page('theme_settings',__( ' Front Page' ),		__('Front Page')		,'edit_theme_options','theme_frontpage','theme_options_frontpage');
@@ -305,11 +305,11 @@ function theme_nav() {
       <?php 
 		/* bbPress plugin support */
 		if (function_exists('netfunktheme_bbpress_plugin_init')){
-          echo '<li class="plugin bbpress"> <a href="'. $_SERVER['PHP_SELF']. '?page=theme_bbpress"'. ($page == 'theme_bbpress' ? ' class="current"' : '').'> <i class="fa fa-caret-right"></i> bbPress  </a> </li>';
+          echo '<li class="plugin bbpress"> <a href="'. $_SERVER['PHP_SELF']. '?page=theme_bbpress"'. ($page == 'theme_bbpress' ? ' class="current"' : '').'> <i class="fa fa-caret-right"></i> bbPress  </a> </li> ';
 		}
 		/* buddyPress plugin */
-		if (class_exists('netfunktheme_buddypress_plugin_init')){
-          echo '<li class="plugin"> <a href="'. $_SERVER['PHP_SELF']. '?page=theme_buddypress"'. ($page == 'theme_buddypress' ? ' class="current"' : '').'> <i class="fa fa-caret-right"> </i> buddyPress </a> </li>';
+		if (class_exists('BuddyPress')){
+          echo '<li class="plugin"> <a href="'. $_SERVER['PHP_SELF']. '?page=theme_buddypress"'. ($page == 'theme_buddypress' ? ' class="current"' : '').'> <i class="fa fa-caret-right"> </i> buddyPress </a> </li> ';
 		}
       ?>
     </ul>
@@ -1782,9 +1782,9 @@ function theme_options_css() {
 
 
 /* Debuger ( move to end of a function to debug $options output )  */			
-echo '<h6>debug</h6>';
-echo '<pre>';
-print_r (get_option('netfunktheme_options_actions'));
-echo '</pre>';
+//echo '<h2>debug</h2>';
+//echo '<pre>';
+//print_r (get_option('netfunktheme_options_actions'));
+//echo '</pre>';
 
 // EOF

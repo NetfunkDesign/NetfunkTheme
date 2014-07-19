@@ -74,48 +74,15 @@ function netfunktheme_options_buddypress_validate( $input ) {
 
   global $netfunktheme_buddypress_onoff_options, $netfunktheme_buddypress_leftright_options;
 
-  /* validate the input */
-  if ( !isset($input['actionpage_slug']) )
-    $input['actionpage_slug'] = 'community';
+   /* get the action page options array */
+  $options = get_option('netfunktheme_options_actions');
 
-  if ( !isset( $input['show_actionpage_sidebar']) )
-    $input['show_actionpage_sidebar'] = 'yes';
+   /* up the options array */
+  $options['buddypress']['actionpage_slug'] = (isset($input['actionpage_slug']) ? $input['actionpage_slug'] : 'community');
+  $options['buddypress']['show_actionpage_sidebar'] = (isset( $input['show_actionpage_sidebar']) ? $input['show_actionpage_sidebar'] : 'yes');
+  $options['buddypress']['actionpage_sidebar_side'] = (isset( $input['actionpage_sidebar_side']) ? $input['actionpage_sidebar_side'] : 'left');
 
-  if ( ! isset( $input['actionpage_sidebar_side']) )
-    $input['actionpage_sidebar_side'] = 'left';
-
-  /* get the action page options array */
-  $options_array = get_option('netfunktheme_options_actions');
-  
-  if (is_array($options_array)){
-    foreach ( $options_array as $key => $value ):
-    if ($input['actionpage_slug'] != $value['actionpage_slug']) {
-	  $options = array (
-		'actionpage_slug' => $value['actionpage_slug'],
-		'show_actionpage_sidebar' => $value['show_actionpage_sidebar'],
-		'actionpage_sidebar_side' => $value['actionpage_sidebar_side']);
-	  /* return trimmed options array */
-	  $options_trimmed = array (
-	    $key => $options);
-	} 
-    endforeach;
-  }
-  
-  $input_options = array (
-	'actionpage_slug' => $input['actionpage_slug'],
-	'show_actionpage_sidebar' => $input['show_actionpage_sidebar'],
-	'actionpage_sidebar_side' => $input['actionpage_sidebar_side'] 
-  );
-  $options_updates = array (
-	'buddypress' => $input_options 
-  );
-
-  if (isset($options_trimmed))
-    $options_updated = array_merge($options_trimmed,$options_updates);
-  else 
-    $options_updated = $options_updates;
-
-  return $options_updated;
+  return $options;
 
 }
 

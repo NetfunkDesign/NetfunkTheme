@@ -91,6 +91,20 @@ if (!isset($_GET['action'])):
 
 <div class="home-bottom-content">
 
+    <div class="small-12 columns text-center clearfix">
+	  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- funkinfamily responsive -->
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-3971469745981874"
+        data-ad-slot="2384082088"
+        data-ad-format="auto"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+
 	<div class="row">
 
 		<div class="large-<?php echo (isset($theme_options['show_front_page_sidebar']) && $theme_options['show_front_page_sidebar'] == 'yes' ? '9' : '12')?> small-12 columns">
@@ -115,7 +129,7 @@ if (!isset($_GET['action'])):
             <?php get_template_part( 'nav', 'above' ); ?>
           
             <?php while ( have_posts() ) : the_post() ?>
-                <?php get_template_part( 'entry' ); ?>
+                <?php get_template_part( 'template/entry','summary' ); ?>
                 <?php comments_template(); ?>
             <?php endwhile; ?>
         

@@ -10,7 +10,7 @@
 
 <div id="container">
 
-<?php if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] <= '2') { ?>
+<?php if (isset($netfunk_page_options['page_splash_type']) && $netfunk_page_options['page_splash_type'] < '2') { ?>
 
 	<?php 
     

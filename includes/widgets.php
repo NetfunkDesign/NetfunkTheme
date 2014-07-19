@@ -617,12 +617,10 @@ class Netfunk_Labels_Info extends WP_Widget {
 		'search'         => '' );
 		
 		$bookmarks = get_bookmarks ($bookmark_args);
-		
-		echo '<div class="row">';
-		echo '<div class="small-12 columns">';
+		echo '<div class="small-12 widget-content">';
 		echo '<a class="button tiny secondary round right show-for-medium-up" style="margin-top: 10px;" href="/labels/">More Labels</a>'
 			.'<h2 class="widget-title">'.$custom_title.'</h2>';
-		echo '<div class="panel radius callout">';
+		echo '<div class="panel radius">';
 		echo '<br />';
 		echo '<ul class="xoxo blogroll">';
 		// Loop through each bookmark and print formatted output
@@ -638,8 +636,6 @@ class Netfunk_Labels_Info extends WP_Widget {
 		echo '<div class="clear"></div>';
 		echo '</div>';
 		echo '</div>';
-		echo '</div>';
-
 	}
 	
 	

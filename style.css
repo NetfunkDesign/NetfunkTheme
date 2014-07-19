@@ -29,6 +29,15 @@ menu, nav, section {
 ol, ul {
 	list-style:none;}
 
+label { color: inherit; }
+label input[type="file"] {
+  position: fixed;
+  top: -1000px;
+}
+
+hr {
+ border-color: inherit; }
+
 a { color: #30b0c4; }
 a:hover { color: #53a0b4; }
 
@@ -76,6 +85,18 @@ header #nav li a {
       color: #93c445; }
   header #nav .user-nav-dropdown {
     box-shadow: 0px 2px 10px rgba(0,0,0,0.5)}
+
+  header #nav .user-login-dropdown {
+  width:200px;
+  padding: 10px 10px 20px;
+  background: #272e30;
+  clear: both; }
+
+  header #nav li .sub-menu { 
+  width: 200px;
+  min-width: 200px; }
+
+
 
   /* responsive menu */
   header #responsive-menu {
@@ -504,6 +525,9 @@ button.secondary, .button.secondary {
     padding-bottom: .6rem;
     padding-left: 1rem;}
 
+.panel ul li {
+  color: inherit; }
+
 .panel.callout {
     border-style: solid;
     border-width: 1px;
@@ -511,6 +535,16 @@ button.secondary, .button.secondary {
     margin-bottom: 1.25rem;
     padding: 1.25rem;
     background: #272e30; }
+	
+  .panel.notice {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #6ecddc;
+    background: #EEE;
+	padding: .45em; }
+	.panel.notice p {
+	line-height: 1.4em;
+	font-size: .865em; }
 
 .slideshow-wrapper {
   overflow: hidden;}
@@ -559,7 +593,13 @@ footer .adsense-footer {
 /* MISC */
 
 .clear {
-	clear:both; }
+ clear: both;
+ margin: 0;
+ padding: 0;
+ line-height: 1px;}
+
+br.clear {
+  margin: 0 0 1em 0;}
 
 .sticky {}
 
