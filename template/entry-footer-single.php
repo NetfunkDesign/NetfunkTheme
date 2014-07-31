@@ -1,6 +1,9 @@
 
 <div class="entry-footer-meta">
-  <div class="panel radius entry-footer">
+
+  <div class="entry-footer">
+   
+  <hr />
 
 	<?php
       printf( __( '<b>This article was posted in </b> %1$s%2$s.', 'netfunktheme' ),
@@ -10,9 +13,7 @@
       the_title_attribute('echo=0'),
       get_post_comments_feed_link() );
     ?>
-    
-    <hr />
-    
+
     <?php
 	
       printf( __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>. Follow comments with the <a href="%5$s" title="Comments RSS to %4$s" rel="alternate" type="application/rss+xml">RSS feed for this post</a>. ', 'netfunktheme' ),
@@ -36,11 +37,14 @@
         
       elseif ( !comments_open() && !pings_open() ) :
         
-        _e( ' >Both comments and trackbacks are closed. ', 'netfunktheme' );
+        _e( ' Both comments and trackbacks are closed. ', 'netfunktheme' );
         
       endif;
     
     ?>
+       
+        <hr />
         
  </div>
+
 </div>

@@ -27,48 +27,16 @@ class Netfunk_Featured_Pages extends WP_Widget {
 		$grid_size = $instance[ 'pages_grid_size' ];
 		$display_type = $instance[ 'display_type' ];
 
-		echo '<div class="small-12 columns widget-content">';
+		echo '<div class="small-12 widget-content featured-content featured-pages">';
 		echo '<h2 class="widget-title">'.$page_title.'</h2>';
+		echo '<div class="small-12 widget_content clearfix">';
 		//   per_page  |  offset  |  grid_size  | display_type     
 		$this->netfunktheme_get_pages($page_ids,$per_page,$offset,$grid_size,$display_type);
-		echo '<br clear="all" />';
+		echo '</div>';
 		echo '</div>';
 	}
 	
 	public function netfunktheme_get_pages($page_ids,$per_page,$offset,$grid_size,$display_type){
-	
-	
-		/* SAMPLE CODE */
-		
-		/*
-		
-		<select name="page-dropdown"
-		 onchange='document.location.href=this.options[this.selectedIndex].value;'> 
-		 <option value="">
-		 
-		<?php echo esc_attr( __( 'Select page' ) ); ?></option> 
-		 
-		 <?php
-		 
-		  $pages = get_pages(); 
-		  
-		  foreach ( $pages as $page ) {
-			
-			$option = '<option value="' . get_page_link( $page->ID ) . '">';
-			
-			$option .= $page->post_title;
-			
-			$option .= '</option>';
-			
-			echo $option;
-		 
-		 }
-		 
-		 ?>
-		 
-		</select>
-	
-		*/
 
 		$args = array( 'child_of' => '', 'sort_column' => 'post_date', 'sort_order' => 'desc' );
 
@@ -82,49 +50,41 @@ class Netfunk_Featured_Pages extends WP_Widget {
 		
 				if ($n <= $per_page){
 				
-					if ($display_type != 'image'){ 
-					
-				?>
-						<div class="large-<?php echo $grid_size ?> medium-4 small-12 left home-block">
+				    $content = $page->post_content;
+					$image = '';
+					$image_url = wp_get_attachment_image_src( get_post_thumbnail_id($page->ID), 'medium');
+					$image = $image_url[0];
+						
+					if (empty($image))
+					  $image = netfunktheme_catch_page_image($content);
 				
-					  <?php echo '<a href="';
-					  
-							echo get_page_link( $page->ID);
+					if ($display_type != 'image'){ 
+
+						// get the page content
+						$content = apply_filters( 'the_content', $content ); 
+					   
+					    ?>
+                       
+						<div class="large-<?php echo $grid_size ?> medium-4 small-12 columns left home-block<?php echo ( $display_type == 'tall' ?  ' tall' : '' ) ?>">
+				
+                           <div class="home-block-content" data-equalizer-watch>
+                
+                              <a href="<?php echo get_page_link( $page->ID); ?>" rel="bookmark" title="<?php printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') ) ?>">
+                              
+                                <div class="home-block-img" style="background: url('<?php echo $image ?>')"></div>
+                            
+                                <h4 class="home-block-title"><?php echo $page->post_title; ?></h4>
+						  
+                              </a>
+                              
+                              <!--div class="home-block-meta hide-for-small">By: <?php the_author(); ?>  <br />On: <?php the_time( get_option( 'date_format' ) ); ?></div-->
+
+                              <p><?php echo wp_trim_words(netfunktheme_content_strip_objects($content),30, '...');  ?></p>
 							
-							echo '"';
+                            </div>
 							
-							if($display_type=='tall')
-								echo ' class="tall"';
-							
-							echo ' title="';
-							printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') );
-							echo '" rel="bookmark">';
-							$content = $page->post_content;
-							
-							$image = '';
-							$image_url = wp_get_attachment_image_src( get_post_thumbnail_id($page->ID), 'medium');
-							$image = $image_url[0];
-							
-							if (empty($image))
-								$image = netfunktheme_catch_page_image($content);
-	
-							$content = apply_filters( 'the_content', $content ); 
-						
-						?>
-							
-							<div class="home-block-img" style="background-image: url('<?php echo $image ?>')"></div>
-							<div class="home-block-title">
-							<?php echo $page->post_title; ?>
-							</div>
-						
-							<div class="home-block-content" data-equalizer-watch>
-							  <?php echo wp_trim_words(netfunktheme_content_strip_objects($content),30, '...');  ?>
-							</div>
-							
-							<button class="button success tiny radius show-for-medium-up">Read More</button>
-							<button class="button success small radius show-for-small">Read More</button>
-							
-							<?php echo '</a>' ?>
+							<a href="<?php echo get_page_link( $page->ID); ?>" class="button tiny round success" rel="bookmark" title="<?php printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') ) ?>">Read More</a>
+
 				
 						</div>
 					
@@ -133,26 +93,24 @@ class Netfunk_Featured_Pages extends WP_Widget {
 					} else {
 			
 					?>
-						<div class="large-<?php echo $grid_size ?> left" style="margin-bottom: 30px;">
-						<span data-tooltip class="has-tip [tip-bottom]" title="<?php $page->post_title ?>">
-						<?php 
-						echo '<a href="';
-						
-						get_page_link( $page->ID );
-						
-						echo '" rel="bookmark" class="featuredImage">';
-						
-						$image = netfunktheme_catch_page_image($content);
-						
-						?>
-						<div style="background-image: url('<?php echo $image ?>');">
-							<!--button class="button tiny success radius right">Read More</button-->
+						<div class="large-<?php echo $grid_size ?> columns left">
+                        
+                            <div class="home-block-content" data-equalizer-watch>
+                            
+                                <span data-tooltip class="has-tip [tip-bottom]" title="<?php $page->post_title ?>">
+                                
+                                    <a href="<?php echo get_page_link( $page->ID ); ?>" rel="bookmark" class="featuredImage">
+                                    
+                                      <div class="home-block-img" style="background: url('<?php echo $image ?>')"></div>
+                                    
+                                    </a>
+                                
+                                </span>
+                            
+                            </div>
+                        
 						</div>
-						<?php 
-						echo '</a>'; 
-						?>
-						</span>
-						</div>
+                        
 					<?php 
 			
 					}
@@ -333,12 +291,13 @@ class Netfunk_Homepage_Categories extends WP_Widget {
 		$grid_size = $instance[ 'grid_size' ];
 		$display_type = $instance[ 'display_type' ];
 
-		echo '<div class="small-12 widget-content">';
+		echo '<div class="small-12 widget-content featured-content featured-posts">';
 		echo '<a class="button tiny secondary round right show-for-medium-up" style="margin-top: 10px;" href="'. $cat_link.'"><i class="fa fa-arrow-right"></i> &nbsp; More '. $cat_name.'</a>'
 		.'<h2 class="widget-title">'.$custom_title.'</h2>';
+		echo '<div class="small-12 widget_content clearfix">';
 		//   per_page  |  offset  |  category_id  |  grid_size  | display_type     
 		$this->netfunktheme_get_categories($per_page,$offset,$cat_id,$grid_size,$display_type);
-		echo '<br clear="all" />';
+		echo '</div>';
 		echo '</div>';
 	}
 	
@@ -353,53 +312,50 @@ class Netfunk_Homepage_Categories extends WP_Widget {
 			$n = 0;
 			$content = get_the_content();
 			
+			$image = '';
+			$image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium');
+			$image = $image_url[0];
+			
+			if (empty($image))
+				$image = netfunktheme_catch_post_image($content);
+			
 			setup_postdata( $post ); 
 			if ($display_type != 'image'){ 
 			
 		?>
-			  <div class="large-<?php echo $grid_size ?> medium-4 small-12 left home-block">
+			  <div class="large-<?php echo $grid_size ?> medium-4 small-12 columns left home-block">
 		
-			  <?php echo '<a href="';
-				
-				the_permalink();
-				echo '"';
-				
-				if($display_type=='tall')
-					echo ' class="tall"';
-				
-				echo ' title="';
-				printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') );
-				echo '" rel="bookmark">';
-
-				$image = '';
-				$image_url = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium');
-				$image = $image_url[0];
-				
-				if (empty($image))
-					$image = netfunktheme_catch_post_image($content);
-
-			  ?>
-
-                    <div class="home-block-img" style="background-image: url('<?php echo $image ?>')"></div>
-                    <div class="home-block-title">
-                    <?php the_title(); ?>
+               <div class="home-block-content" data-equalizer-watch>
+        
+                 <a href="<?php the_permalink() ?>" title="<?php printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') ) ?>" rel="bookmark">
+                 
+                    <div class="home-block-img" style="background: url('<?php echo $image ?>')">
+                    
                     </div>
+                    
+                    <h4 class="home-block-title"><?php the_title(); ?></h4>
+                 
+                 </a>
 					
 					<div class="postdate">
-						<strong>posted on:</strong> 
+                    
+						<strong>posted on:</strong>
+                         
 						<?php the_time('M d, Y') ?>
+						
+                        <br />
 						<br />
-						<br />
-						<span class="show-for-small">
-						<?php echo wp_trim_words(netfunktheme_content_strip_objects($content),25, '...');  ?>
+						
+                        <span class="show-for-small">
+						  <?php echo wp_trim_words(netfunktheme_content_strip_objects($content),25, '...');  ?>
 						</span>
+                     
 					</div>
 					
-					<button class="button success tiny radius show-for-medium-up">Read More</button>
-					<button class="button success small radius show-for-small">Read More</button>
-					
-					<?php echo '</a>' ?>
+                    <a href="<?php the_permalink() ?>" class="button tiny round success" rel="bookmark" title="<?php printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') ) ?>">Read More</a>
 		
+                 </div>
+        
 				</div>
 			
 		<?php 
@@ -420,9 +376,7 @@ class Netfunk_Homepage_Categories extends WP_Widget {
             if (empty($image))
                 $image = netfunktheme_catch_post_image($content);
             ?>
-            <div style="background-image: url('<?php echo $image ?>');">
-                <!--button class="button tiny success radius right">Read More</button-->
-            </div>
+            <div class="home-block-img" style="background: url('<?php echo $image ?>')"></div>
             <?php 
             echo '</a>'; 
             ?>

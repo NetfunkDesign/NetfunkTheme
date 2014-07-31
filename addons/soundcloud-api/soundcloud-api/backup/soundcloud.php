@@ -38,7 +38,7 @@ if (!class_exists('bc_soundcloud_integration')) {
 			
 			echo "Connect your Soundcloud.com user profile with ".$bloginfo.". Share and comments on your sounds right from your profile.";
 			
-			echo "<a href=\"".$authorizeUrl."&scope=non-expiring&display=popup\" style=\"padding: 0px; margin: 0px 0px 0px -5px; border: 0px;\"><img src=\"" . get_template_directory_uri() . "/plugins/soundcloud-api/soundcloud-api/images/btn-connect-sc-s.png\" class=\"soundcloud_connect\" border=\"0\"/></a>";
+			echo "<a href=\"".$authorizeUrl."&scope=non-expiring&display=popup\" style=\"padding: 0px; margin: 0px 0px 0px -5px; border: 0px;\"><img src=\"" . get_template_directory_uri() . "/addons/soundcloud-api/soundcloud-api/images/btn-connect-sc-s.png\" class=\"soundcloud_connect\" border=\"0\"/></a>";
 		
 		}
 		
@@ -48,14 +48,14 @@ if (!class_exists('bc_soundcloud_integration')) {
 		
 			$authorizeUrl = $soundcloud->getAuthorizeUrl();
 			
-			echo "<a href=\"".$authorizeUrl."&scope=non-expiring&display=popup\" style=\"float: right; padding: 0px; margin: 0px 20px 0px 0px; border: 0px;\"><img src=\"" . get_template_directory_uri() . "/plugins/soundcloud-api/soundcloud-api/images/btn-connect-s.png\" class=\"soundcloud_connect\" border=\"0\"/></a>";
+			echo "<a href=\"".$authorizeUrl."&scope=non-expiring&display=popup\" style=\"float: right; padding: 0px; margin: 0px 20px 0px 0px; border: 0px;\"><img src=\"" . get_template_directory_uri() . "/addons/soundcloud-api/soundcloud-api/images/btn-connect-s.png\" class=\"soundcloud_connect\" border=\"0\"/></a>";
 		}
 		
 		function soundcloud_disconnect_link(){ 
 			
 			echo "<form name=\"soundcloud_disconnect_form\" id=\"soundcloud_disconnect_form\" action=\"\" method=\"post\">";
 			
-			echo "<input name=\"soundcloud_disconnect\" type=\"submit\" id=\"soundcloud_disconnect\" class=\"soundcloud_connect\" value=\"\" style=\"background: url(" . get_template_directory_uri() . "/plugins/soundcloud-api/soundcloud-api/images/btn-disconnect-l.png) no-repeat top left; margin: -10px 0px 0px 20px; width: 140px; height: 29px; border: none;\">";
+			echo "<input name=\"soundcloud_disconnect\" type=\"submit\" id=\"soundcloud_disconnect\" class=\"soundcloud_connect\" value=\"\" style=\"background: url(" . get_template_directory_uri() . "/addons/soundcloud-api/soundcloud-api/images/btn-disconnect-l.png) no-repeat top left; margin: -10px 0px 0px 20px; width: 140px; height: 29px; border: none;\">";
 			
 			echo "<input type=hidden name=action value=delete_token>";
 			
@@ -65,7 +65,7 @@ if (!class_exists('bc_soundcloud_integration')) {
 		
 		function soundcloud_disconnect_link_mini(){ 
 
-			echo '<a href="'.site_url('/?action=soundcloud').'&action=delete_token" class="soundcloud_connect_mini" style="background: url(' . get_template_directory_uri() . '/plugins/soundcloud-api/soundcloud-api/images/btn-disconnect-s.png) no-repeat top left; float: right; margin: 0px 20px 0px 20px; width: 109px; height: 21px; border: none;"></a>';
+			echo '<a href="'.site_url('/?action=soundcloud').'&action=delete_token" class="soundcloud_connect_mini" style="background: url(' . get_template_directory_uri() . '/addons/soundcloud-api/soundcloud-api/images/btn-disconnect-s.png) no-repeat top left; float: right; margin: 0px 20px 0px 20px; width: 109px; height: 21px; border: none;"></a>';
 			echo '<label style=\"float: right;\">[ <a href="'.site_url('/?action=soundcloud').'">settings</a> ]</label>';
 		}
 		

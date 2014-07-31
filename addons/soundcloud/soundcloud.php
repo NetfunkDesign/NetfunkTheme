@@ -30,10 +30,10 @@ if (class_exists('bc_soundcloud_integration')){
 	/* register netfunktheme soundcloud plugin css  */
 	
 	function netfunktheme_soundcloud_plugin_styles() {
-		$myStyleFile = get_template_directory() . '/plugins/soundcloud-api/soundcloud-api/style.css';
+		$myStyleFile = get_template_directory() . '/addons/soundcloud-api/soundcloud-api/style.css';
 		if ( file_exists($myStyleFile) ) {
 		$theme_url = get_template_directory_uri();
-		wp_register_style('myStyleSheets', $theme_url .'/plugins/soundcloud-api/soundcloud-api/style.css');
+		wp_register_style('myStyleSheets', $theme_url .'/addons/soundcloud-api/soundcloud-api/style.css');
 		wp_enqueue_style( 'myStyleSheets');}
 	}
 	
@@ -60,7 +60,7 @@ if (class_exists('bc_soundcloud_integration')){
 			$authorizeUrl = $soundcloud->getAuthorizeUrl();
 			$bloginfo = get_bloginfo( 'name' );
 			//echo "Connect your Soundcloud.com user profile with ".$bloginfo.". Share and comments on your sounds right from your profile.";
-			//echo "<a href=\"".$authorizeUrl."&scope=non-expiring&display=popup\" style=\"padding: 0px; margin: 0px 0px 0px -5px; border: 0px;\"><img src=\"" . get_template_directory_uri() . "/plugins/soundcloud-api/soundcloud-api/images/btn-connect-sc-s.png\" class=\"soundcloud_connect\" border=\"0\"/></a>";
+			//echo "<a href=\"".$authorizeUrl."&scope=non-expiring&display=popup\" style=\"padding: 0px; margin: 0px 0px 0px -5px; border: 0px;\"><img src=\"" . get_template_directory_uri() . "/addons/soundcloud-api/soundcloud-api/images/btn-connect-sc-s.png\" class=\"soundcloud_connect\" border=\"0\"/></a>";
 		}
 	}
 
@@ -186,7 +186,7 @@ function netfunktheme_soundcloud_auth_page() {
 		$bloginfo = get_bloginfo( 'name' );
 		//$my_music = json_decode($soundcloud->get('tracks',array('user_id' => $me['id'])), true);			/* not using this */
 		echo '<h4>Authentication Successful</h4>';
-		echo '<p><img src="'.get_template_directory_uri().'/plugins/soundcloud-api/soundcloud-api/images/soundcloud-icon.png" style="float: right; margin: -50px 50px 10px 10px;"></p>';
+		echo '<p><img src="'.get_template_directory_uri().'/addons/soundcloud-api/soundcloud-api/images/soundcloud-icon.png" style="float: right; margin: -50px 50px 10px 10px;"></p>';
 		echo '<p>You are now fully connected between your soundcloud.com account and ' . $bloginfo . '.</p> ';
 		echo '<p>';
 		echo '<strong>Account Name:</strong> ' . $me [ 'username' ] . '<br /><br />';

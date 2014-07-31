@@ -2,7 +2,7 @@
 /* 
 
 Plugin Name: Soundcloud API Package 
-Plugin Description: Soundcloud.com API package. Needed for all Soundcloud addon plugins for Breaksculture Theme. Includes the soundcloud PHP API SDK distribution kit. 
+Plugin Description: Soundcloud.com API package. Needed for all Soundcloud addon addons for Breaksculture Theme. Includes the soundcloud PHP API SDK distribution kit. 
 Plugin Version: 1.0 
 Plugin Date: 12/03/13 
 Plugin Author: Phil Sanders 
@@ -11,7 +11,7 @@ Plugin URL: http://www.netfunkdesign.com
 
 */
 
-require_once ( get_template_directory() .'/plugins/soundcloud-api/soundcloud-api/soundcloud.php');
+require_once ( get_template_directory() .'/addons/soundcloud-api/soundcloud-api/soundcloud.php');
 
 if (class_exists('bc_soundcloud_integration')){
 

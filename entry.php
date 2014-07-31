@@ -1,5 +1,5 @@
 
-<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<div id="post-<?php the_ID(); ?> clearfix" <?php post_class(); ?>>
 
 <?php
 

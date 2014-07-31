@@ -301,7 +301,7 @@ function theme_nav() {
       <li> <a href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_pages" ?>" <?php echo ($page == 'theme_pages' ? 'class="current"' : '') ?>> Pages </a> </li>
       <li> <a href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_posts" ?>" <?php echo ($page == 'theme_posts' ? 'class="current"' : '') ?>> Posts </a> </li>
       <li> <a href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_css" ?>" <?php echo ($page == 'theme_css' ? 'class="current"' : '') ?>> Scripting </a> </li>
-      <li> <a href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_plugins" ?>" <?php echo ($page == 'theme_plugins' ? 'class="current"' : '') ?>> Plugins  </a> </li>
+      <li> <a href="<?php echo $_SERVER['PHP_SELF']. "?page=theme_addons" ?>" <?php echo ($page == 'theme_addons' ? 'class="current"' : '') ?>> Add-ons  </a> </li>
       <?php 
 		/* bbPress plugin support */
 		if (function_exists('netfunktheme_bbpress_plugin_init')){
@@ -1696,6 +1696,7 @@ function theme_options_posts() {
 	</form>
 </div>
 <?php
+
 } 
 
 /* theme custom css options */

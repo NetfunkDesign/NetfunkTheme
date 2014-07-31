@@ -1,11 +1,13 @@
 
 <?php get_header(); ?>
 
-<div id="container" class="row">
+<div id="container" class="content-padding">
 
-    <div class="row content">
+  <div class="content">
+    
+    <div class="row">
 
-        <div class="large-9 columns left">
+        <div class="small-12 large-9 columns">
         
         	<h2 class="page-title"><?php printf( __( 'Search Results for: %s', 'netfunktheme' ), '<span>' . get_search_query()  . '</span>' ); ?></h2>
 
@@ -51,8 +53,10 @@
 
         <?php get_sidebar(); ?>
     
-    </div><!-- content -->
+      </div>
+    
+    </div>
 
-</div><!-- container -->
+</div>
 
 <?php get_footer(); ?>

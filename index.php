@@ -11,55 +11,55 @@
 
 <?php 
 
-if (!isset($_GET['action'])):
+  if (!isset($_GET['action'])):
 
 	$category_id = (isset($category_id) ? $category_id : 0);
 	netfunktheme_get_large_featured($netfunk_general_options['show_num_features'],$offset=0,$category_id,$netfunk_general_options['splash_height']); 
 
- endif;
+  endif;
 
 ?>
 
-<div class="content">
+<?php if ( (isset($theme_options['show_welcome_message']) && $theme_options['show_welcome_message'] == 'yes') or (isset($theme_options['show_featured_content']) && $theme_options['show_featured_content'] == 'yes') ){ ?>
+
+<div class="content clearfix">
 
     <div class="row">
 
-        <?php if ( isset($theme_options['show_welcome_message']) && $theme_options['show_welcome_message'] == 'yes' ){ ?>
+        <div class="small-12 frontpage-content clearfix">
 
-            <div class="small-12 large-<?php echo (isset($theme_options['show_featured_content']) && $theme_options['show_featured_content'] == 'yes' ? '4' : '12') ?> left welcome-message">
+          <?php if ( isset($theme_options['show_welcome_message']) && $theme_options['show_welcome_message'] == 'yes' ){ ?>
 
-                <div class="small-12 columns">
+            <div class="small-12 large-<?php echo (isset($theme_options['show_featured_content']) && $theme_options['show_featured_content'] == 'yes' ? '4' : '12') ?> columns welcome-message">
+
+                <div class="small-12">
+                   
                     <h1><?php echo ( isset($theme_options['welcome_title']) ? $theme_options['welcome_title'] : '' ) ?></h1>
+                    
                     <p class="welcome-text">
                         <?php echo ( isset($theme_options['welcome_text']) ? $theme_options['welcome_text'] : '' ) ?>
                     </p>
+                
                 </div>
 
                 <?php if (isset($theme_options['more_about_title']) && isset($theme_options['more_about_uri'])){ ?>
-                    <div class="small-12 columns">
-                        <a href="<?php echo home_url() . $theme_options['more_about_uri'] ?>" class="button success medium radius"><?php echo (isset($theme_options['more_about_title']) ? $theme_options['more_about_title'] : ''); ?></a>
+                    
+                    <div class="small-12 text-center">
+                    
+                        <a href="<?php echo home_url() . $theme_options['more_about_uri'] ?>" class="button success small round"><?php echo (isset($theme_options['more_about_title']) ? $theme_options['more_about_title'] : ''); ?></a>
+                    
                     </div>
+				
 				<?php } ?>
 
-				<?php if (isset($theme_options['show_social_icons']) && isset($theme_options['show_social_icons'])){ ?>
-                    <div class="small-12 columns follow-us-block">
-                        <div class="follow-text"><strong>Keep up with us:</strong></div>
-                        <br />
-                        <a href="http://soundcloud.com/groups/breaks-culture" class="webicon large soundcloud" target="_blank" title="Listen to BreaksCulture group on Soundcloud">Listen BreaksCulture group on Soundcloud</a>
-                        <a href="https://twitter.com/breaks_culture" class="webicon large twitter" target="_blank" title="Follow BreaksCulture on Twitter">Follow BreaksCulture on Twitter</a>
-                        <a href="http://www.facebook.com/netfunktheme" class="webicon large facebook" target="_blank" title="Like BreaksCulture on Facebook">Like BreaksCulture on Facebook</a>
-                        <a href="/feed/" class="webicon large rss" target="_blank" title="netfunkdesign.com RSS">netfunkdesign.com RSS</a>
-                    </div>
-                <?php } ?>
+            </div>
 
-            </div><!-- welcome message -->
-
-        <?php } ?>
+          <?php } ?>
 
         <?php if ( isset($theme_options['show_featured_content']) && $theme_options['show_featured_content'] == 'yes'){ ?>
 
             <div class="small-12 large-<?php echo (isset($theme_options['show_welcome_message']) && $theme_options['show_welcome_message'] == 'yes' ? '8' : '12') ?> right featured-content">
-                <div class="small-12" data-equalizer>
+                <div class="small-12 columns" data-equalizer>
                 <?php if ( is_active_sidebar( 'home-primary-widget-area' ) ) : ?>
                     <?php if ( ! dynamic_sidebar( 'home-primary-widget-area' ) ) : ?>
                         <h4> You need to add some widgets... </h4>
@@ -84,70 +84,49 @@ if (!isset($_GET['action'])):
 
         <?php } ?>
 
+        </div>
+
     </div>
+   
 </div><!-- content -->
 
-<!-- Page Bottom Content -->
+<?php } ?>
 
-<div class="home-bottom-content">
-
-    <div class="small-12 columns text-center clearfix">
-	  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- funkinfamily responsive -->
-      <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-3971469745981874"
-        data-ad-slot="2384082088"
-        data-ad-format="auto"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
-
+<div class="page-bottom-content clearix">
 
 	<div class="row">
 
-		<div class="large-<?php echo (isset($theme_options['show_front_page_sidebar']) && $theme_options['show_front_page_sidebar'] == 'yes' ? '9' : '12')?> small-12 columns">
+		<div class="small-12 <?php do_action('netfunktheme_sidenoside', 'frontpage') ?> columns">
         
 		<?php if (isset($theme_options['show_posts_on_home']) && $theme_options['show_posts_on_home'] == 'yes'){ ?>
-
-            <h2 class="widget-title">Recent Posts</h2>
-            <div class="small-12">
-
-            <?php if(!is_front_page()) { ?>
-            <h1><?php if ( is_category() ) {
-                    single_cat_title();
-                } elseif (is_tag() ) {
-                    echo (__( 'Archives for ', 'netfunktheme' )); single_tag_title();
-                } elseif (is_archive() ) {
-                    echo (__( 'Archives for ', 'netfunktheme' )); single_month_title();
-                } else {
-                    wp_title(' | ', 'after', true);
-            } ?></h1>
-            <?php } ?>
-        
-            <?php get_template_part( 'nav', 'above' ); ?>
+			
+            <div class="small-12 clearfix recent-posts">
+            
+              <h2 class="widget-title">Recent Posts</h2>
           
-            <?php while ( have_posts() ) : the_post() ?>
-                <?php get_template_part( 'template/entry','summary' ); ?>
-                <?php comments_template(); ?>
-            <?php endwhile; ?>
-        
-            <?php get_template_part( 'nav', 'below' ); ?>
+              <?php while ( have_posts() ) : the_post() ?>
+              
+			    <?php  get_template_part( 'template/entry-list', get_post_format() ); ?>
+            
+			  <?php endwhile; ?>
             
             </div>
-            <hr />
 
     	<?php } ?>
 
 		<?php if (isset($theme_options['show_front_page_bottom_content']) && $theme_options['show_front_page_bottom_content'] == 'yes') { ?>
 
+			<div class="small-12 clearfix bottom-content">
+
             <?php if ( is_active_sidebar( 'home-bottom-widget-area' ) ) : ?>
-                <?php if ( ! dynamic_sidebar( 'home-bottom-widget-area' ) ) : ?>
+             
+                <?php if ( ! dynamic_sidebar( 'home-bottom-widget-area' ) ) { ?>
                 <h4> You need to add some widgets... </h4>
-                <?php endif; // end below content widget area ?>
                 <br class="clear" />
-            <?php else: ?>
+                <?php } ?>
+            
+			<?php else: ?>
+            
                 <h2 class="widget-title">Page bottom Content Area</h2>
                 <h4> You can add Widgets to the bottom of pages or disable this area completely.</h4>
                 <a href="<?php echo home_url().'/wp-admin/widgets.php' ?>">Add Widgets</a> | <a href="<?php echo home_url() .'/wp-admin/admin.php?page=theme_frontpage#page-bottom' ?>">Modify Front Page Settings</a>
@@ -155,7 +134,7 @@ if (!isset($_GET['action'])):
                 <br />
                 <hr />
                 <h2 class="widget-title">Recommended Plugins</h2>
-                <p> We have worked hard to make NetfunkTheme compatible with a lot of popular plugins. Here are a few plugins we highly recommended, to help you manage your content better.</p>
+                <p> We have worked hard to make NetfunkTheme compatible with a lot of popular addons. Here are a few addons we highly recommended, to help you manage your content better.</p>
                 <div class="small-12">
                 	<h4 style="color: #BBB">A few suggestions</h4>
                     <br />
@@ -179,7 +158,10 @@ if (!isset($_GET['action'])):
                 <div class="small-12 columns">
                 	<div class="panel radius">To get ride of this conent add some widgets or disable Page Bottom content in <a href="<?php echo home_url() .'/wp-admin/admin.php?page=theme_frontpage#page-bottom' ?>">Theme settings</a></div>
 				</div>
+
 			<?php endif; ?>
+            
+            </div> 
 
         <?php } ?>
 
@@ -192,16 +174,11 @@ if (!isset($_GET['action'])):
 			get_sidebar(); 
 		
 		} ?>
-        
-        <!--pre>
-        <?php print_r ($theme_options) /* debug line */ ?>
-        </pre-->
 
-    </div><!-- row -->
+    </div>
     
-</div><!-- below content -->
+  </div><!-- page bottom content -->
 
-</div> <!-- container -->
-
+</div><!-- container -->
 
 <?php get_footer(); ?>
