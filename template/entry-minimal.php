@@ -1,52 +1,28 @@
 
-<div class="large-2 small-12 left home-block" style="margin-bottom: 20px;">
+<?php global $authordata; ?>
 
-    <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<?php  $image = netfunktheme_catch_post_image(); ?>
 
-    <?php 
-    
-		global $authordata;
-	
-        echo '<a href="';
-        
-		the_permalink();
-        
-		echo '" title="';
-        
-		printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') );
-        
-		echo '" rel="bookmark" style="">';
-		
-		$image = netfunktheme_catch_post_image();
-		
-		?>
+<div class="large-3 small-12 columns left home-block minimal">
 
-        <div class="home-block-img" style="background: url('<?php echo $image ?>')"></div>
+  <div class="home-block-content" data-equalizer-watch>
 
-		<div class="home-block-title">
-        
-		<?php the_title(); ?>
-        
-		</div>
-		
-        <div>
-        
-        <strong>by:</strong> 
-        
-		<?php the_author(); ?>
-        
-        <br />
+      <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-		<strong>On:</strong> 
-        
-        <?php the_time( get_option( 'date_format' ) ); ?>
-		
-        </div>
-        
-        <button class="button success tiny radius right">Read More</button>
-        
-		<?php echo '</a>'; ?>
+        <a href="<?php the_permalink(); ?>" rel="bookmark" title="<?php printf( __('%s', 'netfunktheme'), the_title_attribute('echo=0') ) ?>">
 
-    </div>
+          <div class="home-block-img" style="background: url('<?php echo $image ?>')"></div>
 
-</div> 
+	      <h4 class="home-block-title"> <?php the_title(); ?> </h4>
+
+        </a>
+
+        <div class="home-block-meta hide-for-small">By: <?php the_author(); ?>  On: <?php the_time( get_option( 'date_format' ) ); ?></div>
+
+      </div>
+
+     <!--a href="<?php the_permalink(); ?>" rel="bookmark" class="button tiny success round right">Read More</a-->
+
+  </div>
+
+</div>
