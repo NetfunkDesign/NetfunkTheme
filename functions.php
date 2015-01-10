@@ -1,19 +1,19 @@
 <?php
-/* 
+/*
 
-	Theme Name: WP-netfunktheme 
+	Theme Name: WP-netfunktheme
 	Theme URI: http://netfunkdesign.com
 	Description: netfunkdesign.com Soundcloud.com Intigration.
 	Version: Beta 0.9.1
 	Author: Phil Sanders
 	Author URI: http://netfunkdesign.com
 
-	License: GPL2 
+	License: GPL2
 
 	Copyright 2012 Phil Sanders  (email : philsanders79@gmail.com)
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -30,7 +30,7 @@
 /* breakculture include files  */
 require_once (get_template_directory() .'/includes/theme-options.php');
 require_once (get_template_directory() .'/includes/actions.php');
-require_once (get_template_directory() .'/includes/plugins.php');
+require_once (get_template_directory() .'/includes/addons.php');
 require_once (get_template_directory() .'/includes/widgets.php');
 require_once (get_template_directory() .'/includes/shortcodes.php');
 
@@ -45,20 +45,20 @@ foreach ($file_paths as $file) {
 if (!function_exists( 'netfunktheme_setup')){
 	function netfunktheme_setup() {
 		global $content_width, $options, $onoff_options;
-		
+
 		if (!isset($content_width))
 			$content_width = 1000;
-		
+
 		add_theme_support( 'automatic-feed-links' );
 		add_theme_support( 'post-thumbnails' );
-		
+
 		//add_theme_support( 'infinite-scroll', array(
 		//	'container' => 'container',
 		//	'footer' => 'page'));
-			
+
 		// Add support for custom backgrounds
 		$args = array(
-		'default-color' => '#000',
+		'default-color' => '#FFF',
 		'wp-head-callback' => '_custom_background_cb');
 		add_theme_support( 'custom-background', $args );
 
@@ -67,11 +67,11 @@ if (!function_exists( 'netfunktheme_setup')){
 		load_theme_textdomain( 'netfunktheme', get_template_directory() . '/languages' );
 		$locale = get_locale();
 		$locale_file = get_template_directory() . "/languages/".$locale.".php";
-	
+
 		if (is_readable($locale_file))
 			require_once($locale_file);
 
-		// This theme uses wp_nav_menu() in two location.	
+		// This theme uses wp_nav_menu() in two location.
 		register_nav_menus( array(
 				'primary' => __( 'Main Navigation', 'netfunktheme' ),
 				'footer' => __( 'Footer Navigation', 'netfunktheme' )
@@ -86,7 +86,7 @@ if (!function_exists( 'netfunktheme_theme_header')){
 
 	function netfunktheme_theme_header() {
 		$args = array(
-			'default-image' => get_template_directory_uri() . '/images/logo.png',
+			'default-image' => get_stylesheet_directory_uri() . '/images/logo.png',
 			'default-text-color' => '#000',
 			'width' => 400,
 			'height' => 100,
@@ -97,18 +97,18 @@ if (!function_exists( 'netfunktheme_theme_header')){
 			'admin-preview-callback' => ''
 		);
 		$args = apply_filters( 'netfunktheme_theme_header_args', $args );
-	
+
 		if ( function_exists( 'wp_get_theme' ) ) {
 			add_theme_support( 'custom-header', $args );
-	
+
 		} else {
 			// Compat: Versions of WordPress prior to 3.4.
 			define( 'HEADER_TEXTCOLOR', $args['default-text-color'] );
 			define( 'HEADER_IMAGE', $args['default-image'] );
 			define( 'HEADER_IMAGE_WIDTH', $args['width'] );
 			define( 'HEADER_IMAGE_HEIGHT', $args['height'] );
-			
-			add_custom_image_header( $args['wp-head-callback'], 
+
+			add_custom_image_header( $args['wp-head-callback'],
 			$args['admin-head-callback'], $args['admin-preview-callback']);
 		}
 	}
@@ -131,30 +131,30 @@ add_action( 'after_setup_theme', 'netfunktheme_theme_header' );
 function netfunktheme_custom_pings($comment, $args, $depth) {
 	$GLOBALS['comment'] = $comment;
 	?>
-	
+
 	<li id="comment-<?php comment_ID() ?>" <?php comment_class() ?>>
 	<div class="comment-author"><?php printf(__('By %1$s on %2$s at %3$s', 'netfunktheme'),
-	
+
 	get_comment_author_link(),
 	get_comment_date(),
 	get_comment_time() );
 	edit_comment_link(__('Edit', 'netfunktheme'), ' <span class="meta-sep"> | </span> <span class="edit-link">', '</span>'); ?></div>
 
-	<?php 
-	if ($comment->comment_approved == '0') { 
-		echo '\t\t\t\t\t<span class="unapproved">'; _e('Your trackback is awaiting moderation.', 'netfunktheme'); echo '</span>\n'; 
-	} 
+	<?php
+	if ($comment->comment_approved == '0') {
+		echo '\t\t\t\t\t<span class="unapproved">'; _e('Your trackback is awaiting moderation.', 'netfunktheme'); echo '</span>\n';
+	}
 	?>
 
     <div class="comment-content">
 		<?php comment_text() ?>
     </div>
-    
-	<?php 
+
+	<?php
 }
 
 /* netfunktheme page title */
-if (!function_exists( 'netfunktheme_page_title')){ 
+if (!function_exists( 'netfunktheme_page_title')){
 	function netfunktheme_page_title($title) {
 		if ($title == '') {
 			return 'Untitled';
@@ -172,46 +172,76 @@ if (!function_exists( 'netfunktheme_title_blogname')){
 }
 add_filter('wp_title', 'netfunktheme_title_blogname');
 
-/* netfunktheme default navigation menu */ 
+/* netfunktheme default navigation menu */
 if (!function_exists( 'netfunktheme_default_navigation')){
 	function netfunktheme_default_navigation(){
 	?><ul id="nav">
-        <li <?php if (is_front_page()) { echo " class=\"current_page_item\""; } ?>><a href="<?php echo esc_url(home_url()); ?>" class="blue" title="Home">Home</a></li>				
+        <li <?php if (is_front_page()) { echo " class=\"current_page_item\""; } ?>><a href="<?php echo esc_url(home_url()); ?>" title="Home">Home</a></li>
         <?php wp_list_pages('title_li=&sort_column=menu_order'); ?>
 	  </ul>
 	<?php
-	
+
 	}
 }
 add_action('netfunktheme_default_navigation','netfunktheme_default_navigation',1,0);
 
-/* netfunktheme navigation menu */ 
+/* netfunktheme navigation menu */
 if (!function_exists( 'netfunktheme_navigation_menu')){
 	function netfunktheme_navigation_menu(){
+
 		$is_nav = '' ;
-		$is_nav = wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' , 'menu_id' => 'nav', 'fallback_cb' => '', 'echo' => false ) );
-		if ($is_nav == '') { 
+
+		$defaults = array(
+			'theme_location'  => 'primary',
+			'menu'            => '',
+			'container'       => false,
+			'container_class' => '',
+			'container_id'    => '',
+			'menu_class'      => 'left',
+			'menu_id'         => 'nav',
+			'echo'            => false,
+			'fallback_cb'     => '',
+			'before'          => '',
+			'after'           => '',
+			'link_before'     => '',
+			'link_after'      => '',
+			'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+			'depth'           => 0,
+			'walker'          => ''
+		);
+
+		$is_nav = wp_nav_menu( $defaults );
+		if ($is_nav == '') {
 			netfunktheme_default_navigation();
 		 } else {
-        	echo ($is_nav); 
+        	echo ($is_nav);
 		}
+
+		/*  menu hack to support foundation .top-bar */
+		echo '<script>
+	    jQuery("#nav.left .menu-item-has-children").addClass(\'has-dropdown\');
+		jQuery("#nav.left .menu-item-has-children").addClass(\'not-click\');
+		jQuery("#nav.left .menu-item-has-children .sub-menu").addClass(\'dropdown\');
+	  </script>';
+
 	}
 }
 add_action('netfunktheme_navigation_menu','netfunktheme_navigation_menu',1,0);
+
 
 /* netfunktheme navigation menu */
 if (!function_exists( 'netfunktheme_user_menu')){
 	function netfunktheme_user_menu(){
 	global $current_user;
-	?>		
-	
-    <ul id="nav" class="right">
-	<?php  
-		
-		if ( is_user_logged_in()) { 
-			printf( __('<li><span data-tooltip class="has-tip [tip-bottom]" title="Click to view your author page"><a href="%1$s" class="user1">Welcome %2$s</a></span></li>', 'netfunktheme'), home_url() . '/?author='.$current_user->ID, $current_user->display_name ); 
 	?>
-        <li class="has-dropdown"><a href="#" class="link" title="Click here to view the blog control panel"><i class="fa fa-desktop"></i> &nbsp; Control Panel</a>
+
+    <ul id="user" class="right">
+	<?php
+
+		if ( is_user_logged_in()) {
+			printf( __('<li><a href="%1$s" data-tooltip class="user1 has-tip tip-bottom radius" title="Click to view your author page"><i class="fa fa-asterisk"></i> &nbsp; %2$s</a></li>', 'netfunktheme'), home_url() . '/?author='.$current_user->ID, $current_user->display_name );
+	?>
+        <li class="has-dropdown"><a href="#" class="link" title="Click here to view the blog control panel"><i class="fa fa-cog"></i> &nbsp; Control Panel</a>
             <ul class="user-nav-dropdown text-left dropdown">
                 <?php $menu_list = do_action('netfunktheme_user_dropdown_menu'); ?>
             </ul>
@@ -219,117 +249,150 @@ if (!function_exists( 'netfunktheme_user_menu')){
 
 <?php } else { ?>
 
-    <?php if (class_exists('WpPhpBB')){ ?>	
+    <?php if (class_exists('WpPhpBB')){ ?>
+
         <li><a href="<?php echo home_url() ?>/forum/ucp.php?mode=register" class="signup" title="Click here to Sign-Up">Sign-Up</a></li>
-    
+
      <?php } else { ?>
-        <li><a href="<?php echo home_url() ?>/wp-signup.php" class="signup" title="Click here to Sign-Up">Sign-Up</a></li>
-     
+
+        <li><a href="<?php echo home_url() ?>/wp-signup.php" class="signup" title="Click here to Sign-Up">Create an Account</a></li>
+
      <?php }?>
-     
-     	<li><a href="<?php echo home_url() ?>/wp-login.php" class="link">Login</a></li>
-	 
+
+     	<li class="has-dropdown"><a href="#" class="link">Sign In</a>
+
+          <ul class="dropdown user-login-dropdown">
+            <?php netfunktheme_login_form(); ?>
+          </ul>
+
+        </li>
+
 	<?php } ?>
-    
+
     </ul><?php
-	}	
-}
-add_action('netfunktheme_user_menu','netfunktheme_user_menu',1,0);
-
-
-/* netfunktheme navigation menu */ 
-if (!function_exists( 'netfunktheme_responsive_nav')){
-	function netfunktheme_responsive_nav(){
-		
-	?>
-    <div id="menu-responsive-select" class="small-12 columns hide-for-medium-up dropdown">
-        
-        <?php 
-        
-            // Get the nav menu based on $menu_name (same as 'theme_location' or 'menu' arg to wp_nav_menu)
-            // This code based on wp_nav_menu's code to get Menu ID from menu slug
-        
-            if ( ( $locations = get_nav_menu_locations() ) && isset( $locations[ 'primary' ] ) ) {
-                $menu = wp_get_nav_menu_object( $locations[ 'primary' ] );
-                $menu_items = wp_get_nav_menu_items($menu->term_id);
-                $menu_list = '<form name="nav_jump" id="nav_jump" method="post" class="custom" action="javascript:void(0);">';
-                $menu_list .= '<select onchange="location.href=nav_jump.menu_primary.options[selectedIndex].value" id="menu_primary">';
-                $menu_list .= '<option value="" class="nav_title"> > Click here to browse</option>';
-        
-                global $post;
-                
-                $page_title = str_replace("<br>","",get_the_title($post->ID));
-        
-                //echo $page_title;
-        
-                foreach ( (array) $menu_items as $key => $menu_item ) {
-                    $title = str_replace("<br>","",$menu_item->title);
-                    $url = $menu_item->url;
-        
-                    if ($url != "#")
-                      $menu_list .= '<option value="'.$url.'"'.($page_title == $title ? ' selected' : '').'>&nbsp; ' . $title . '</option>';
-                      //echo $page_title . " : " . $title . "";
-                }
-                
-                $menu_list .= '</select></form>';
-                
-				echo $menu_list;
-				
-            } else {
-                netfunktheme_default_navigation();
-            }
- 
-        ?>
-        
-        </div>
-        
-      <?php
-	
 	}
 }
-add_action('netfunktheme_responsive_nav','netfunktheme_responsive_nav',1,0);
+add_action('netfunktheme_user_menu','netfunktheme_user_menu',1,0);
 
 
 /* netfunktheme user menu dropdown menu panel */
 if (!function_exists( 'netfunktheme_user_dropdown_menu')){
 	function netfunktheme_user_dropdown_menu(){
-	if (!function_exists( 'netfunktheme_member_edit_link')){ ?>
-        <li><a href="<?php echo home_url() ?>/wp-admin/profile.php" class="members">Profile Settings
-        <!--div>Edit your profile, upload a user image, manage personal <br />preferences.</div--></a></li>
-	<?php } ?>
-    <li><a href="<?php echo home_url() ?>/wp-admin/" class="blog">Blog Control Panel
-    <!--div>Make Posts, Upload Media, <br />Manage Blog Specific Settings.</div--></a></li>
-    <?php if (class_exists('WpPhpBB')) {  
-        $admin_url = wpbb_get_admin_link(); // currently logged in ?>	
-        <li><a href="<?php echo home_url() ?>/forum/ucp.php" class="forum">Forum Control Panel<div>Manage Forum posts, Private Messages, Forum Profile, <br />Forum Specific Settings.</div></a></li>
-        <?php if ( !empty( $admin_url ) )  ?>
+
+	if (!function_exists( 'netfunktheme_member_edit_link')){
+	  if (!function_exists( 'netfunk_member_edit_link')){ ?>
+        <li><a href="<?php echo home_url() ?>/wp-admin/profile.php" class="members"><i class="fa fa-user"></i> &nbsp; Profile Settings</a></li>
+<?php }
+	} ?>
+
+    <li><a href="<?php echo home_url() ?>/wp-admin/" class="blog"><i class="fa fa-wordpress"></i> &nbsp; Control Panel</a></li>
+
+	<?php if (class_exists('WpPhpBB')) {
+        $admin_url = wpbb_get_admin_link(); // currently logged in ?>
+        <li><a href="<?php echo home_url() ?>/forum/ucp.php" class="forum">Forum Control Panel</a></li>
+
+     <?php if ( !empty( $admin_url ) )  ?>
         <li><a href="<? echo $admin_url ?>">phpBB Administration</a></li>
     <?php } ?>
+
     <li><a href="<?php echo home_url() ?>/wp-login.php?action=logout&redirect_to=<?php echo home_url() ?>" class="signup" title="Click here to Log-Out">Logout</a></li>
-<?php }	
+
+<?php }
 }
 add_action('netfunktheme_user_dropdown_menu','netfunktheme_user_dropdown_menu',1,0);
 
+/* netfunktheme top navigation login dropdown */
+function netfunktheme_login_form( $args = array() ) {
+	$defaults = array( 'echo' => true,
+		'redirect' => site_url( $_SERVER['REQUEST_URI'] ), // Default redirect is back to the current page
+		'form_id' => 'loginform',
+		'label_username' => __( 'Username' ),
+		'label_password' => __( 'Password' ),
+		'label_remember' => __( 'Remember Me' ),
+		'label_log_in' => __( 'Log In' ),
+		'id_username' => 'user_login',
+		'id_password' => 'user_pass',
+		'id_remember' => 'rememberme',
+		'id_submit' => 'wp-submit',
+		'remember' => true,
+		'value_username' => '',
+		'value_remember' => false, // Set this to true to default the "Remember me" checkbox to checked
+	);
+	$args = wp_parse_args( $args, apply_filters( 'login_form_defaults', $defaults ) );
+
+	$form = '
+		<form name="' . $args['form_id'] . '" id="' . $args['form_id'] . '" action="' . site_url( 'wp-login.php', 'login' ) . '" method="post">
+			' . apply_filters( 'login_form_top', '' ) . '
+			<div class="login-username">
+				<label for="' . esc_attr( $args['id_username'] ) . '">' . esc_html( $args['label_username'] ) . '</label>
+				<input type="text" name="log" id="' . esc_attr( $args['id_username'] ) . '" class="input" value="' . esc_attr( $args['value_username'] ) . '" size="20" tabindex="10" />
+			</div>
+			<div class="login-password">
+				<label for="' . esc_attr( $args['id_password'] ) . '">' . esc_html( $args['label_password'] ) . '</label>
+				<input type="password" name="pwd" id="' . esc_attr( $args['id_password'] ) . '" class="input" value="" size="20" tabindex="20" />
+			</div>
+			' . apply_filters( 'login_form_middle', '' ) . '
+			' . ( $args['remember'] ? '<div class="login-remember"><label><input name="rememberme" type="checkbox" id="' . esc_attr( $args['id_remember'] ) . '" value="forever" tabindex="90"' . ( $args['value_remember'] ? ' checked="checked"' : '' ) . ' /> ' . esc_html( $args['label_remember'] ) . '</label></div>' : '' ) . '
+			<div class="login-submit">
+				<input type="submit" name="wp-submit" id="' . esc_attr( $args['id_submit'] ) . '" class="button small success radius right" value="' . esc_attr( $args['label_log_in'] ) . '" tabindex="100" />
+				<input type="hidden" name="redirect_to" value="' . esc_attr( $args['redirect'] ) . '" />
+			</div>
+			' . apply_filters( 'login_form_bottom', '' ) . '
+		</form>';
+
+	if ( $args['echo'] )
+		echo $form;
+	else
+		return $form;
+}
+add_action('netfunktheme_login_form','netfunktheme_login_form',1,0);
+
+/* netfunktheme post-type sidebar options  */
+if (!function_exists( 'netfunktheme_sidenoside')){
+/* called to determine if the theme is using sidebars on the current post type */
+  function netfunktheme_sidenoside( $type ) {
+
+	global $theme_options,$netfunk_page_options,$netfunk_post_options;
+
+	$class = 'large-';
+
+	if ($type == 'frontpage')
+	  $class .= (isset($theme_options['show_front_page_sidebar']) && $theme_options['show_front_page_sidebar'] == 'yes' ? '9' : '12');
+
+	else if ($type == 'page')
+	  $class .= (isset($netfunk_page_options['show_pages_sidebar']) && $netfunk_page_options['show_pages_sidebar'] == 'yes' ? '9' : '12');
+
+	else if ($type == 'post')
+	  $class .= (isset($netfunk_post_options['show_posts_sidebar']) && $netfunk_post_options['show_posts_sidebar'] == 'yes' ? '9' : '12');
+
+	else
+	  $class .= '9';
+
+	echo $class;
+
+  }
+}
+add_action('netfunktheme_sidenoside', 'netfunktheme_sidenoside');
+
 /* netfunktheme comment reply javascript */
 if (!function_exists( 'netfunktheme_comment_reply_js')){
-
-	function netfunktheme_comment_reply_js() {
-		if(get_option('thread_comments')) { 
-			wp_enqueue_script('comment-reply');
-		}
-	}
+  function netfunktheme_comment_reply_js() {
+    if(get_option('thread_comments')) {
+      wp_enqueue_script('comment-reply');
+    }
+  }
 }
 add_action('comment_form_before', 'netfunktheme_comment_reply_js');
 
 /* netfunktheme comment form defaults */
 if (!function_exists( 'netfunktheme_comment_form_defaults')){
-	function netfunktheme_comment_form_defaults( $args ) {
-		$req = get_option( 'require_name_email' );
-		$required_text = sprintf( ' ' . __('Required fields are marked %s', 'netfunktheme'), '<span class="required">*</span>' );
-		$args['comment_notes_before'] = '<p class="comment-notes">' . __('Your email is kept private.', 'netfunktheme') . ( $req ? $required_text : '' ) . '</p>';
-		$args['title_reply'] = __('Post a Comment', 'netfunktheme');
-		$args['title_reply_to'] = __('Post a Reply to %s', 'netfunktheme');
-		return $args;
+  function netfunktheme_comment_form_defaults( $args ) {
+    $req = get_option( 'require_name_email' );
+    $required_text = sprintf( ' ' . __('Required fields are marked %s', 'netfunktheme'), '<span class="required">*</span>' );
+    $args['comment_notes_before'] = '<p class="comment-notes">' . __('Your email is kept private.', 'netfunktheme') . ( $req ? $required_text : '' ) . '</p>';
+    $args['title_reply'] = __('Post a Comment', 'netfunktheme');
+    $args['title_reply_to'] = __('Post a Reply to %s', 'netfunktheme');
+    return $args;
 	}
 }
 add_filter('comment_form_defaults', 'netfunktheme_comment_form_defaults');
@@ -337,9 +400,9 @@ add_filter('comment_form_defaults', 'netfunktheme_comment_form_defaults');
 
 /* netfunktheme page numbers */
 function netfunktheme_get_page_number() {
-	if (get_query_var('paged')) {
-		print ' | ' . __( 'Page ' , 'netfunktheme') . get_query_var('paged');
-	}
+  if (get_query_var('paged')) {
+    print ' | ' . __( 'Page ' , 'netfunktheme') . get_query_var('paged');
+  }
 }
 
 /* netfunktheme category lists */
@@ -370,10 +433,10 @@ function netfunktheme_tag_it($glue) {
 			break;
 		}
 	}
-	
+
 	if ( empty($tags) )
 		return false;
-	
+
 	return trim(join( $glue, $tags ));
 }
 
@@ -382,7 +445,7 @@ function netfunktheme_custom_comments($comment, $args, $depth) {
 
 	$GLOBALS['comment'] = $comment;
 	$GLOBALS['comment_depth'] = $depth;
-	
+
 ?>
 	<li id="comment-<?php comment_ID() ?>" <?php comment_class() ?>>
     <div class="comment-author vcard"><?php netfunktheme_commenter_link() ?></div>
@@ -390,7 +453,7 @@ function netfunktheme_custom_comments($comment, $args, $depth) {
 
 	<?php edit_comment_link(__('Edit', 'netfunktheme'), ' <span class="meta-sep"> | </span> <span class="edit-link">', '</span>'); ?></div>
 	<?php if ($comment->comment_approved == '0') { echo '\t\t\t\t\t<span class="unapproved">'; _e('Your comment is awaiting moderation.', 'netfunktheme'); echo '</span>\n'; } ?>
-	
+
     <div class="comment-content">
 		<?php comment_text() ?>
 	</div>
@@ -398,7 +461,7 @@ function netfunktheme_custom_comments($comment, $args, $depth) {
 	<?php
 
 	if ($args['type'] == 'all' || get_comment_type() == 'comment') :
-	
+
 		comment_reply_link(array_merge($args, array(
 		'reply_text' => __('Reply','netfunktheme'),
 		'login_text' => __('Login to reply.', 'netfunktheme'),
@@ -417,188 +480,27 @@ function netfunktheme_commenter_link() {
 
 	if ( preg_match( '/<a[^>]* class=[^>]+>/', $commenter ) ) {
 		$commenter = preg_replace( '/(<a[^>]* class=[\'"]?)/', '\\1url ' , $commenter );
-	} 
+	}
 	else {
 		$commenter = preg_replace( '/(<a )/', '\\1class="url "' , $commenter );
 	}
-	
+
 	$avatar_email = get_comment_author_email();
 	$avatar = str_replace( "class='avatar", "class='photo avatar", get_avatar( $avatar_email, 80 ) );
 	echo $avatar . ' <span class="fn n">' . $commenter . '</span>';
 }
 
 
-/* text widget filter */
-function exam_plug_text_replace($text) {
- 
- $open = '<div class="small-12 columns">';
- $close = '</div>';
- 
- return  $open . $text . $close;
- 
-}
-//add_filter('widget_text', 'exam_plug_text_replace');
 
 
+/* "SMART" Stuff
 
-/* netfunktheme breadcrumbs */
-function netfunktheme_breadcrumbs() {
-
-	/* === OPTIONS === */
-	$text['home']     = 'Home'; // text for the 'Home' link
-	$text['category'] = '%s'; // text for a category page
-	$text['search']   = 'Results for "%s" Query'; // text for a search results page
-	$text['tag']      = 'Posts Tagged "%s"'; // text for a tag page
-	$text['author']   = 'Articles Posted by %s'; // text for an author page
-	$text['404']      = 'Error 404'; // text for the 404 page
-
-	$show_current   = 1; // 1 - show current post/page/category title in breadcrumbs, 0 - don't show
-	$show_on_home   = 0; // 1 - show breadcrumbs on the homepage, 0 - don't show
-	$show_home_link = 1; // 1 - show the 'Home' link, 0 - don't show
-	$show_title     = 1; // 1 - show the title for the links, 0 - don't show
-	$delimiter      = ' '; // delimiter between crumbs
-	$before         = '<span class="current show-for-medium-up">'; // tag before the current crumb
-	$after          = '</span> &nbsp; '; // tag after the current crumb
-
-	global $post;
-	$home_link    = home_url('/');
-	$link_before  = '<span typeof="v:Breadcrumb">';
-	$link_after   = '</span>';
-	$link_attr    = ' rel="v:url" property="v:title"';
-	$link         = $link_before . '<a' . $link_attr . ' href="%1$s">%2$s</a>' . $link_after;
-	$parent_id    = $parent_id_2 = $post->post_parent;
-	$frontpage_id = get_option('page_on_front');
-
-	if (is_front_page()) {
-		
-		if ($show_on_home == 1) echo '<div class="breadcrumbs"><a href="' . $home_link . '">' . $text['home'] . '</a></div>';
-	
-	} else {
-		
-		echo '<div class="breadcrumbs" xmlns:v="http://rdf.data-vocabulary.org/#">';
-		if ($show_home_link == 1) {
-			echo '<a href="' . $home_link . '" rel="v:url" property="v:title">' . $text['home'] . '</a>';
-			if ($frontpage_id == 0 || $parent_id != $frontpage_id) echo $delimiter;
-		}
-
-		if ( is_category() ) {
-			$this_cat = get_category(get_query_var('cat'), false);
-			
-			if ($this_cat->parent != 0) {
-				$cats = get_category_parents($this_cat->parent, TRUE, $delimiter);
-				
-				if ($show_current == 0) $cats = preg_replace("#^(.+)$delimiter$#", "$1", $cats);
-				$cats = str_replace('<a', $link_before . '<a' . $link_attr, $cats);
-				$cats = str_replace('</a>', '</a>' . $link_after, $cats);
-				if ($show_title == 0) $cats = preg_replace('/ title="(.*?)"/', '', $cats);
-				echo $cats;
-			}
-			if ($show_current == 1) echo $before . sprintf($text['category'], single_cat_title('', false)) . $after;
-
-		} elseif ( is_search() ) {
-			echo $before . sprintf($text['search'], get_search_query()) . $after;
-
-		} elseif ( is_day() ) {
-			echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $delimiter;
-			echo sprintf($link, get_month_link(get_the_time('Y'),get_the_time('m')), get_the_time('F')) . $delimiter;
-			echo $before . get_the_time('d') . $after;
-
-		} elseif ( is_month() ) {
-			echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $delimiter;
-			echo $before . get_the_time('F') . $after;
-
-		} elseif ( is_year() ) {
-			echo $before . get_the_time('Y') . $after;
-
-		} elseif ( is_single() && !is_attachment() ) {
-			
-			if ( get_post_type() != 'post' ) {
-				$post_type = get_post_type_object(get_post_type());
-				$slug = $post_type->rewrite;
-				printf($link, $home_link . '/' . $slug['slug'] . '/', $post_type->labels->singular_name);
-				if ($show_current == 1) echo $delimiter . $before . get_the_title() . $after;
-			} else {
-				$cat = get_the_category(); $cat = $cat[0];
-				$cats = get_category_parents($cat, TRUE, $delimiter);
-				
-				if ($show_current == 0) $cats = preg_replace("#^(.+)$delimiter$#", "$1", $cats);
-				$cats = str_replace('<a', $link_before . '<a' . $link_attr, $cats);
-				$cats = str_replace('</a>', '</a>' . $link_after, $cats);
-				if ($show_title == 0) $cats = preg_replace('/ title="(.*?)"/', '', $cats);
-				echo $cats;
-				if ($show_current == 1) echo $before . get_the_title() . $after;
-			}
-
-		} elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
-			$post_type = get_post_type_object(get_post_type());
-			echo $before . $post_type->labels->singular_name . $after;
-
-		} elseif ( is_attachment() ) {
-			$parent = get_post($parent_id);
-			$cat = get_the_category($parent->ID); $cat = $cat[0];
-			$cats = get_category_parents($cat, TRUE, $delimiter);
-			$cats = str_replace('<a', $link_before . '<a' . $link_attr, $cats);
-			$cats = str_replace('</a>', '</a>' . $link_after, $cats);
-			if ($show_title == 0) $cats = preg_replace('/ title="(.*?)"/', '', $cats);
-			echo $cats;
-			printf($link, get_permalink($parent), $parent->post_title);
-			if ($show_current == 1) echo $delimiter . $before . get_the_title() . $after;
-
-		} elseif ( is_page() && !$parent_id ) {
-			if ($show_current == 1) echo $before . get_the_title() . $after;
-
-		} elseif ( is_page() && $parent_id ) {
-			if ($parent_id != $frontpage_id) {
-				$breadcrumbs = array();
-				while ($parent_id) {
-					$page = get_page($parent_id);
-					if ($parent_id != $frontpage_id) {
-						$breadcrumbs[] = sprintf($link, get_permalink($page->ID), get_the_title($page->ID));
-					}
-					$parent_id = $page->post_parent;
-				}
-				$breadcrumbs = array_reverse($breadcrumbs);
-				for ($i = 0; $i < count($breadcrumbs); $i++) {
-					echo $breadcrumbs[$i];
-					if ($i != count($breadcrumbs)-1) echo $delimiter;
-				}
-			}
-			if ($show_current == 1) {
-				if ($show_home_link == 1 || ($parent_id_2 != 0 && $parent_id_2 != $frontpage_id)) echo $delimiter;
-				echo $before . get_the_title() . $after;
-			}
-
-		} elseif ( is_tag() ) {
-			echo $before . sprintf($text['tag'], single_tag_title('', false)) . $after;
-
-		} elseif ( is_author() ) {
-	 		global $author;
-			$userdata = get_userdata($author);
-			echo $before . sprintf($text['author'], $userdata->display_name) . $after;
-
-		} elseif ( is_404() ) {
-			echo $before . $text['404'] . $after;
-		}
-
-		if ( get_query_var('paged') ) {
-			if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ' (';
-			echo __('Page') . ' ' . get_query_var('paged');
-			if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ')';
-		}
-
-		echo '</div><!-- .breadcrumbs -->';
-
-	}
-} 
-
-/* "SMART" Stuff  
-
-# What we mean by "smart" is that we attempt to take information 
-# from the post content and format it in a more exciting way and 
+# What we mean by "smart" is that we attempt to take information
+# from the post content and format it in a more exciting way and
 # without much need for shortcodes or additional programming.
 
-# If the post contains any number of the objects indcluding: 
-# images, urls, video links, soundcloud or audio urls; we attempt 
+# If the post contains any number of the objects indcluding:
+# images, urls, video links, soundcloud or audio urls; we attempt
 # to manage content acordingy, formattnig and re-arranging,
 # the page in a unified and ultimatly more expressive way.
 
@@ -618,12 +520,13 @@ function netfunktheme_catch_page_image($content) {
 	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id($page->ID), 'full');
     $splash_img = $image_url[0];
   } else {
-    $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
-    if (isset($matches [1][0]))
-      $splash_img = $matches [1][0];
+    //$output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $content, $matches);
+    //if (isset($matches [1][0]))
+    //  $splash_img = $matches [1][0];
     if (empty($splash_img)) //Defines a default image
       $splash_img = get_stylesheet_directory_uri() . "/images/default-splash.jpg";
   }
+
   return $splash_img;
 }
 
@@ -684,7 +587,7 @@ function splash_img_callback( $atts, $content = null  ) {
 		'top' => 'top',
 		'align' => 'center',
 	), $atts ) );
-	
+
 	return '<span class="splash '.$top.' '.$align.'">' . $content . '</span>';
 
 }
@@ -701,53 +604,42 @@ function netfunktheme_get_pages_splash($per_page=4,$offset=0,$page_id,$height=40
 
 	<!--div class="preloader"></div-->
 
-    	<ul data-orbit data-options="animation:slide;animation_speed:800;pause_on_hover:true;resume_on_mouseout:true;slide_number:false;animation_speed:500;navigation_arrows:true;bullets:false;variable_height:true;">
-     
+    	<ul data-orbit data-options="
+        animation:fade;
+        animation_speed:1000;
+        pause_on_hover:false;
+        resume_on_mouseout:false;
+        slide_number:false;
+        navigation_arrows:false;
+        bullets:true;
+        variable_height:true;">
+
         <?php
 
         $mypages = get_pages();
-    
+
 		$n = 1;
-	
-        foreach ( $mypages as $page ) : 
+
+        foreach ( $mypages as $page ) :
 
             $image = netfunktheme_catch_page_image( $page->post_content );
 
 			if ($page_id == $page->ID){
-		
+
         ?>
-        
-            <li data-orbit-slide="headline-<?php echo $n ?>" style="background-image: url('<?php echo $image ?>')">
 
-				<div class="orbit-caption">
+		<li data-orbit-slide="headline-<?php echo $n ?>" style="background-image:url('<?php echo $image ?>'); height: <?php echo $height ?>px; min-height: <?php echo $height ?>px;"> </li>
 
-					<div class="row">
+      	<?php
 
-						<div class="large-12 column">
-
-                            <?php edit_post_link( __( '<i class="fa fa-pencil"></i> &nbsp; Edit This Page', 'netfunktheme' ), '<div class="button secondary round tiny edit-link" style="margin-top: 20px;">', '</div>' ) ?>
-
-							<h2><?php echo $page->post_title ?></h2>
-
-                        </div>
-                    
-                    </div>
-
-                </div>
-
-
-            </li>
-
-      	<?php 
-        
 			}
-		
+
 			$n ++;
-		
-        endforeach; 
-        
+
+        endforeach;
+
         ?>
-    
+
     </ul>
 
 </div>
@@ -764,34 +656,40 @@ function netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id=0,$h
 
 ?>
 
-<div class="slideshow-wrapper"<?php echo ' style="height:' . $height .'px; min-height:' . $height .'px; overflow: hidden;" ' ?>>
+<div class="slideshow-wrapper"<?php echo ' style="height:' . $height .'px; min-height:' . $height .'px;" ' ?>>
 
 	<div class="preloader"></div>
 
-    	<ul data-orbit data-options="animation:slide;animation_speed:800;pause_on_hover:true;resume_on_mouseout:true;slide_number:false;animation_speed:500;navigation_arrows:true;bullets:false;variable_height:true;">
-     
+    	<ul data-orbit data-options="
+        animation:fade;
+        animation_speed:1000;
+        pause_on_hover:false;
+        resume_on_mouseout:false;
+        slide_number:false;
+        navigation_arrows:false;
+        bullets:true;
+        variable_height:true;">
+
       <?php
-    
+
         $args = array( 'posts_per_page' => $per_page, 'offset'=> $offset, 'category' => $category_id ); // FEATURED CATEGORY - HARD CODED
-        
+
         $myposts = get_posts( $args );
-    
+
 		$n = 1;
-	
-        foreach ( $myposts as $post ) : 
-		
-			setup_postdata( $post ); 
-            
+
+        foreach ( $myposts as $post ) :
+
+			setup_postdata( $post );
+
             $image = netfunktheme_catch_post_image();
-        
+
             $content = get_the_content();
-        
+
       ?>
-        
-            <li data-orbit-slide="headline-<?php echo $n ?>" style="background-image: url('<?php echo $image ?>')">
-        
-                <!--img src="<?php //echo $image ?>" style="opacity: 0;"/-->
-    
+
+            <li data-orbit-slide="headline-<?php echo $n ?>" style="background-image:url('<?php echo $image ?>'); height: <?php echo $height ?>px; min-height: <?php echo $height ?>px;">
+
                 <div class="orbit-caption">
 
 					<div class="row">
@@ -799,29 +697,29 @@ function netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id=0,$h
 						<div class="large-12">
 
                             <h2><?php the_title() ?></h2>
-            
+
                             <p><?php echo wp_trim_words(netfunktheme_content_strip_objects($content),30, '...') ?></p>
-        
-                            <a href="<?php the_permalink(); ?>" class="button small radius">Read More</a>
-    
+
+                            <a href="<?php the_permalink(); ?>" class="">Read More</a>
+
                         </div>
-                    
+
                     </div>
 
                 </div>
 
             </li>
 
-      <?php 
-        
+      <?php
+
 			$n ++;
-		
-        endforeach; 
-        
+
+        endforeach;
+
         wp_reset_postdata();
-        
+
         ?>
-    
+
     </ul>
 
 </div>
@@ -834,7 +732,7 @@ function netfunktheme_get_large_featured($per_page=4,$offset=0,$category_id=0,$h
 /* netfunktheme author page info */
 function netfunktheme_author_page_info() {
 	$user_id = get_the_author_meta( 'ID' );
-	if ( get_the_author_meta( 'description' ) || get_the_author_meta( 'netfunktheme_about' ) ) { 
+	if ( get_the_author_meta( 'description' ) || get_the_author_meta( 'netfunktheme_about' ) ) {
 		$user_description1 = ( get_the_author_meta('netfunktheme_about') != '' ? get_the_author_meta('netfunktheme_about') : get_the_author_meta('description') );
 		$user_description2 = ( get_the_author_meta('netfunktheme_more_about') != '' ? get_the_author_meta('netfunktheme_more_about') : '' );
 	?>
@@ -844,7 +742,7 @@ function netfunktheme_author_page_info() {
 			do_action('netfunktheme_author_image', $atts = array('user_id'=>$user_id,'size'=>240));
         ?>
         </div>
-        <br class="clear" /> 
+        <br class="clear" />
         <br />
         <br />
         <div class="author-description">
@@ -868,12 +766,12 @@ add_action('netfunktheme_author_page_info', 'netfunktheme_author_page_info',1,0)
 
 /* netfunktheme author avatar */
 function netfunktheme_author_avatar($atts){
-	
+
 	extract( shortcode_atts( array(
 		'user_id' => '0',
 		'size' => '96'
 	), $atts ) );
-	
+
 	$default = '/images/avatar.jpg';
 	echo get_avatar( $atts['user_id'], $atts['size'], $default );
 
@@ -882,32 +780,48 @@ add_action('netfunktheme_author_image','netfunktheme_author_avatar',1,1);
 
 /* netfunktheme about the author panel */
 function netfunktheme_about_the_author (){
-	$user_id = get_the_author_meta( 'ID' );
-    $user_description1 = ( get_the_author_meta('netfunktheme_about') ? get_the_author_meta('netfunktheme_about') : get_the_author_meta('description') );
-	?>
-    <hr />
-    <div class="small-12 hide-for-small">
-        <div class="netfunktheme_author_info">
-        <h3>About The Author</h3>
-        <div class="small-12 columns">
-            <div class="large-2 small-12 columns left center-for-small netfunktheme_author_avatar">
-            <?php do_action('netfunktheme_author_image', $atts = array('user_id'=>$user_id,'size'=>150));  ?>
-            </div><!-- .author-avatar -->
-            <div class="large-10 small-12 columns right author-description netfunktheme_about_card">
-                <h6><?php printf( __( '%s', 'netfunktheme' ), get_the_author() ); ?></h6>
-                <p><?php echo $user_description1 ?></p>
-                <?php if (get_page_by_title('Contact Us') || get_page_by_title('Contact') || get_page_by_title('contact')){  ?>
-                    <a href="<?php echo home_url() . '/contact/' ?>">
-                    <?php printf( __( ' Contact %s', 'netfunktheme' ), get_the_author() ); ?>
-                    </a>
-                <?php } ?>
-                <a href="<?php echo home_url() . '/author/'.get_the_author_meta('user_nicename',$user_id) ?>" class="button small radius success right">More About the Author</a>
-            </div><!-- .author-description	-->
-            <br class="clear" />
+  $user_id = get_the_author_meta( 'ID' );
+  $user_description1 = ( get_the_author_meta('netfunktheme_about') ? get_the_author_meta('netfunktheme_about') : get_the_author_meta('description') );
+?>
+
+    <div class="panel callout hide-for-small clearfix about-author">
+
+        <div class="small-12 large-2 left center-for-small netfunktheme_author_avatar">
+
+		  <?php do_action('netfunktheme_author_image', $atts = array('user_id'=>$user_id,'size'=>150));  ?>
+
+        </div><!-- .author-avatar -->
+
+        <div class="small-12 large-10 right author-description netfunktheme_about_card">
+
+          <div class="small-12 columns clearfix">
+
+            <h6>About The Author</h6>
+
+            <h4 class="author-title"><?php printf( __( '%s', 'netfunktheme' ), get_the_author() ); ?></h4>
+
+            <p><?php echo $user_description1 ?></p>
+
+            <?php if (get_page_by_title('Contact Us') || get_page_by_title('Contact') || get_page_by_title('contact')){  ?>
+
+                <a href="<?php echo home_url() . '/contact/' ?>">
+
+                <?php printf( __( ' Contact %s', 'netfunktheme' ), get_the_author() ); ?>
+
+                </a>
+
+            <?php } ?>
+
+           </div>
+
+          <a href="<?php echo home_url() . '/author/'.get_the_author_meta('user_nicename',$user_id) ?>" class="button tiny round secondary right">More About the Author</a>
+
         </div>
-        </div><!-- .author-info -->
-        <br class="clear" />
+
     </div>
+
+    <br />
+
 <?php
 }
 add_action('netfunktheme_about_the_author','netfunktheme_about_the_author',1,0);
@@ -929,7 +843,17 @@ add_action('wp_enqueue_scripts', 'netfunktheme_register_js');
 /* Init Foundation 5 */
 function netfunktheme_foundation_init() {
   if ( !is_admin() ) {
-    echo '<script> jQuery(document).foundation(); </script>';
+    echo '<script> jQuery(document).foundation();
+
+	jQuery(document).ready(function($) {
+      $(window).trigger("resize");
+
+	   // var thumbWidth = $(".home-block-content a").width() - 2;
+	  // $(".home-block-content .home-block-img").height(thumbWidth)
+
+    });
+
+  </script>';
   }
 }
 add_action( 'wp_footer', 'netfunktheme_foundation_init');
@@ -958,7 +882,7 @@ if (!function_exists( 'netfunktheme_custom_javascript_bottom')){
 }
 add_action('wp_footer', 'netfunktheme_custom_javascript_bottom');
 
-/* register netfunktheme css  */
+/* register netfunktheme style sheets  */
 function netfunktheme_theme_styles() {
 	wp_register_style( 'normalize', get_template_directory_uri() . '/includes/foundation-5.3.0/css/normalize.css' );
 	wp_register_style( 'foundation', get_template_directory_uri(). '/includes/foundation-5.3.0/css/foundation.css' );
@@ -966,18 +890,32 @@ function netfunktheme_theme_styles() {
 	wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css' );
 	wp_register_style( 'web-icons', get_template_directory_uri() . '/css/webicons.css' );
 	wp_register_style( 'web-fonts', get_template_directory_uri() . '/css/fonts/stylesheet.css' );
-	wp_register_style( 'theme-css', get_template_directory_uri() . '/style.css' );
-	
+
 	wp_enqueue_style( 'normalize' );
 	wp_enqueue_style( 'foundation' );
 	//wp_enqueue_style( 'superfish' );
 	wp_enqueue_style( 'font-awesome' );
 	wp_enqueue_style( 'web-icons' );
 	wp_enqueue_style( 'web-fonts' );
-	wp_enqueue_style( 'theme-css' );
-	
 }
 add_action('wp_print_styles', 'netfunktheme_theme_styles');
+
+
+/* register netfunktheme css  */
+function netfunktheme_theme_css() {
+	wp_register_style( 'netfunktheme-css', get_stylesheet_uri() );
+	wp_enqueue_style( 'netfunktheme-css' );
+
+}
+add_action('wp_print_styles', 'netfunktheme_theme_css');
+
+/* register netfunk-funkinfamily user.css  */
+function netfunktheme_user_styles() {
+	wp_register_style( 'netfunktheme-user-css', get_stylesheet_directory_uri() . '/css/user.css' );
+	wp_enqueue_style( 'netfunktheme-user-css' );
+}
+add_action('wp_print_styles', 'netfunktheme_user_styles');
+
 
 /* netfunktheme cutom css action */
 if (!function_exists( 'netfunktheme_custom_css')){
@@ -1002,7 +940,7 @@ add_action('widgets_init', 'netfunktheme_widgets_addon', 1);
 
 /* register netfunktheme sidebars */
 function netfunktheme_widgets_init() {
-	
+
 	// LEFT SIDEBAR
 	register_sidebar( array(
 		'name' => __( 'Primary Sidebar', 'netfunktheme' ),
@@ -1028,7 +966,7 @@ function netfunktheme_widgets_init() {
 		'after_widget' => '</li>',
 		'before_title' => '<h3 class="widget-title">',
 		'after_title' => '</h3>',));
-	
+
 	// CONTENT SIDEBARS
 	register_sidebar( array(
 		'name' => __( 'Front Page Content Widgets', 'netfunktheme' ),
@@ -1046,8 +984,8 @@ function netfunktheme_widgets_init() {
 		'after_widget' => '</div>',
 		'before_title' => '<h2 class="widget-title">',
 		'after_title' => '</h2>',));
-	
-	
+
+
 	// FOOTER SIDEBARS
 	register_sidebar( array(
 		'name' => __( 'Footer Widget Area', 'netfunktheme' ),

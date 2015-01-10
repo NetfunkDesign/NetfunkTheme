@@ -34,8 +34,8 @@ get_comment_type() == "comment" ? ++$comment_count : ++$ping_count;
 </div>
 <?php endif; ?>
 </div>
-<?php 
-endif; 
+<?php
+endif;
 global $comments_by_type;
 $comments_by_type = separate_comments( $comments );
 if ( ! empty($comments_by_type['pings']) ) : ?>

@@ -4,9 +4,9 @@
 
 /* action page examples */
 # netfunktheme_action_page_init ($action, $class, $function);
-# netfunktheme_action_page_init ('edit-member', 'edit-member', 'member_profile_function'); 
+# netfunktheme_action_page_init ('edit-member', 'edit-member', 'member_profile_function');
 
-$request_action = (!empty($_REQUEST['action']) ? $_REQUEST['action'] : '');
+$request_action = (!empty($_REQUEST['page_id']) ? $_REQUEST['page_id'] : '');
 
 if(!function_exists('netfunktheme_action_page_init')){
   function netfunktheme_action_page_init ($action, $class, $function) {
@@ -25,10 +25,9 @@ if(!function_exists('netfunktheme_action_page_slug')){
   function netfunktheme_action_page_slug($classes) {
 	$new_classes = array();
 	foreach ($classes as $class){
-
-		// remove the 'home' body element class
-		if ( $class != 'home' )
-		$new_classes[] = $class;
+	  // remove the 'home' body element class
+	  if ( $class != 'home' )
+	  $new_classes[] = $class;
 	}
 	$new_classes[] = 'action-page';
 	return $new_classes;
@@ -53,24 +52,20 @@ if(!function_exists('netfunktheme_action_page_title')){
 /* switch the side bar from left to right side */
 if(!function_exists('netfunktheme_action_side_leftright')){
   function netfunktheme_action_side_leftright(){
-    
+
   }
 }
 
 if(!function_exists('netfunktheme_action_page_template')){
   function netfunktheme_action_page_template() {
-
   	$action_page_root = get_template_directory().'/action.php';
 	$action_page_theme = get_template_directory().'/action.php';
-
 	if (file_exists($action_page_root)) {
 		// if file exists, use it
 		include ($action_page_root);
-
 	} else if (file_exists($action_page_theme)) {
 		// if file exists, use it
 		include ($action_page_theme);
-
 	} else {
 		// otherwise use template function output
 		netfunktheme_action_page_tpl_function();
@@ -79,62 +74,41 @@ if(!function_exists('netfunktheme_action_page_template')){
   }
 }
 
-function netfunktheme_action_page_tpl_function() {
-		
-	get_header(); ?>
-	
-	<div id="container" class="row">
-	
-	<div id="blackoutTrigger"></div>
-	
-	<div class="content row">
-	
-		<div class="large-12 small-12 columns">
-	
-			<br />
-	
-			<div class="large-6 small-12 columns left">
-		
-				<h1><?php do_action('netfunktheme_action_page_title'); ?></h1>
-		
-			</div>
-	
-			<br class="clear" />
-		
-			<div class="large-9 columns">
-		
-				<div class="entry-content">
-				
-					<?php 
-						
-						if ( has_post_thumbnail() ) {
-						
-							//the_post_thumbnail();
-						
-						} 
-						
-					?>
-						
-					<?php the_content(); ?>
-					
-					<br class="clear" />
-	
-				</div>
-
-			</div>
-
-		<?php // place holder for action page sidebar content   
-
-			do_action('netfunktheme_action_page_sidebar'); 
-		?>
-        
-		</div>
-	</div><!--content-->
-	</div><!--container-->
-<?php
-
-	get_footer(); 
-
+if(!function_exists('netfunktheme_action_page_tpl_function')){
+  function netfunktheme_action_page_tpl_function() {
+  ?>
+  <?php get_header(); ?>
+  <div id="container">
+	<div class="content">
+      <div class="row">
+	    <div class="large-12 small-12 columns">
+	      <br />
+		  <div class="large-6 small-12 columns left">
+		    <h1><?php do_action('netfunktheme_action_page_title'); ?></h1>
+		  </div>
+		  <br class="clear" />
+          <br />
+		  <div class="large-9 columns">
+		    <div class="entry-content">
+		    <?php
+		      if ( has_post_thumbnail() ) {
+			    //the_post_thumbnail();
+			  }
+		    ?>
+		    <?php the_content(); ?>
+		    <br class="clear" />
+		  </div>
+	    </div>
+	    <?php // place holder for action page sidebar content
+          do_action('netfunktheme_action_page_sidebar');
+        ?>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php get_footer();?>
+  <?php
+  }
 }
 
 /* NetfunkTheme 'Acton Page' sidebar hook */
@@ -145,7 +119,7 @@ if(!function_exists('netfunktheme_action_page_sidebar')){
 	<div class="large-3 small-12 columns right">
 		<div id="sidebar" class="widget-area theme-action-sidebar">
 			<ul class="sid">
-			<?php dynamic_sidebar('action-widget-area'); ?> 
+			<?php dynamic_sidebar('action-widget-area'); ?>
 			</ul>
 		</div>
 	</div>

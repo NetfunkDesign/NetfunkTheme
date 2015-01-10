@@ -18,7 +18,7 @@
                 <h3 class="widget-title">Sample Meta</h3>
 
                 <ul>
-                
+
                     <li>Site Admin</li>
 
                     <li>Log out</li>
@@ -29,11 +29,11 @@
 
                     <li><a href="http://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>
 
-                </ul>	
+                </ul>
 
-            </li>	
+            </li>
 
-        </ul>				
+        </ul>
 
 <?php } ?>
 
