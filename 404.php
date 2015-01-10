@@ -1,59 +1,39 @@
 
 <?php get_header(); ?>
 
-<div id="container" class="row">
+<div id="container" class="content-padding">
 
-<div class="row content">
+  <div class="content clearfix">
 
-<div class="large-9 columns left">
+    <div class="row">
 
-<div id="post-0" class="post error404 not-found">
+      <div class="small-12 large-9 columns">
 
-<br />
+        <div id="post-0" class="post error404 not-found">
 
+          <h1 class="entry-title"><?php _e('Page Not Found', 'netfunktheme'); ?></h1>
 
-<!-- Google Adsense -->
+          <div class="entry-content">
 
-<div class="large-12 text-left adsense-404" style="border-bottom: 1px #000 solid; padding-bottom: 20px;">
+            <p><?php _e('Nothing found for the requested page. Try a search instead?', 'netfunktheme'); ?></p>
 
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- BreaksCulture - Large -->
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:970px;height:90px"
-         data-ad-client="ca-pub-3971469745981874"
-         data-ad-slot="7997946085"></ins>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+            <div class="large-6 columns">
 
-</div>
+              <?php get_search_form(); ?>
 
-<br />
+            </div>
 
+          </div>
 
-<h1 class="entry-title"><?php _e('Page Not Found', 'netfunktheme'); ?></h1>
+        </div>
 
-<div class="entry-content">
+      </div>
 
-<p><?php _e('Nothing found for the requested page. Try a search instead?', 'netfunktheme'); ?></p>
+      <?php get_sidebar(); ?>
 
-<div class="large-6 columns">
+    </div>
 
-<?php get_search_form(); ?>
-
-</div>
-
-</div>
-
-<hr />
-
-</div>
-
-</div>
-
-<?php get_sidebar(); ?>
-
-</div>
+  </div>
 
 </div>
 
